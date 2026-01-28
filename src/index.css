@@ -1,0 +1,28 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@theme {
+  --color-primary: #eeba2c;
+  --color-primary-content: #161616;
+}
+
+:root, [data-theme] {
+  --p: 0.78 0.16 85 !important;
+  --primary: #eeba2c !important;
+  --primary-content: #161616 !important;
+  --color-primary: #eeba2c !important;
+}
+
+.btn-primary {
+  background-color: var(--color-primary) !important;
+  color: var(--color-primary-content) !important;
+  border-color: var(--color-primary) !important;
+}
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    @apply bg-base-200 antialiased;
+  }
+}
