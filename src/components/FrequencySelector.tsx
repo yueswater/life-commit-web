@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 type FreqType = 'daily' | 'weekly_count' | 'weekly_days' | 'custom';
@@ -19,9 +18,18 @@ interface FrequencySelectorProps {
 }
 
 const FrequencySelector = ({
-  freqType, setFreqType, weeklyCount, setWeeklyCount,
-  selectedDays, toggleDay, customUnit, setCustomUnit,
-  customValue, setCustomValue, customCount, setCustomCount
+  freqType,
+  setFreqType,
+  weeklyCount,
+  setWeeklyCount,
+  selectedDays,
+  toggleDay,
+  customUnit,
+  setCustomUnit,
+  customValue,
+  setCustomValue,
+  customCount,
+  setCustomCount,
 }: FrequencySelectorProps) => {
   const { t } = useTranslation();
   const weekdays = t('common.weekdays', { returnObjects: true }) as string[];
@@ -29,34 +37,42 @@ const FrequencySelector = ({
   return (
     <div className="form-control md:col-span-2">
       <label className="label py-1">
-        <span className="label-text text-gray-400 font-bold uppercase text-xs">{t('habit.frequency.title')}</span>
+        <span className="label-text text-gray-400 font-bold uppercase text-xs">
+          {t('habit.frequency.title')}
+        </span>
       </label>
       <div className="flex flex-wrap gap-2 p-1 bg-base-300 rounded-full mb-4">
-        {(['daily', 'weekly_count', 'weekly_days', 'custom'] as const).map((type) => (
-          <button
-            key={type}
-            type="button"
-            className={`flex-1 min-w-[80px] py-2 rounded-full font-bold text-sm transition-all ${
-              freqType === type ? 'bg-primary text-primary-content shadow-lg' : 'hover:bg-base-100 text-gray-400'
-            }`}
-            onClick={() => setFreqType(type)}
-          >
-            {t(`habit.frequency.${type}`)}
-          </button>
-        ))}
+        {(['daily', 'weekly_count', 'weekly_days', 'custom'] as const).map(
+          (type) => (
+            <button
+              key={type}
+              type="button"
+              className={`flex-1 min-w-[80px] py-2 rounded-full font-bold text-sm transition-all ${
+                freqType === type
+                  ? 'bg-primary text-primary-content shadow-lg'
+                  : 'hover:bg-base-100 text-gray-400'
+              }`}
+              onClick={() => setFreqType(type)}
+            >
+              {t(`habit.frequency.${type}`)}
+            </button>
+          )
+        )}
       </div>
 
       {freqType === 'weekly_count' && (
         <div className="flex items-center gap-4 animate-in slide-in-from-top-2 h-12">
-          <input 
-            type="range" 
-            min="1" 
-            max="7" 
-            value={weeklyCount} 
-            onChange={(e) => setWeeklyCount(parseInt(e.target.value))} 
-            className="range range-primary grow" 
+          <input
+            type="range"
+            min="1"
+            max="7"
+            value={weeklyCount}
+            onChange={(e) => setWeeklyCount(parseInt(e.target.value))}
+            className="range range-primary grow"
           />
-          <span className="text-xl font-black text-primary w-16 text-center">{weeklyCount}次</span>
+          <span className="text-xl font-black text-primary w-16 text-center">
+            {weeklyCount}次
+          </span>
         </div>
       )}
 
@@ -67,7 +83,9 @@ const FrequencySelector = ({
               key={i}
               type="button"
               className={`w-10 h-10 rounded-full font-bold transition-all border-2 ${
-                selectedDays.includes(i) ? 'bg-primary border-primary text-primary-content' : 'border-gray-700 text-gray-500 hover:border-gray-500'
+                selectedDays.includes(i)
+                  ? 'bg-primary border-primary text-primary-content'
+                  : 'border-gray-700 text-gray-500 hover:border-gray-500'
               }`}
               onClick={() => toggleDay(i)}
             >
@@ -80,15 +98,17 @@ const FrequencySelector = ({
       {freqType === 'custom' && (
         <div className="flex items-center gap-x-3 gap-y-2 animate-in slide-in-from-top-2 h-12">
           <div className="flex items-center gap-2 shrink-0">
-            <span className="font-bold text-gray-400">{t('habit.frequency.every')}</span>
-            <input 
-              type="number" 
-              min="1" 
-              className="input input-bordered w-14 bg-base-200 border-gray-700 font-bold h-10 rounded-full px-1 text-center" 
+            <span className="font-bold text-gray-400">
+              {t('habit.frequency.every')}
+            </span>
+            <input
+              type="number"
+              min="1"
+              className="input input-bordered w-14 bg-base-200 border-gray-700 font-bold h-10 rounded-full px-1 text-center"
               value={customValue}
               onChange={(e) => setCustomValue(parseInt(e.target.value) || 1)}
             />
-            <select 
+            <select
               className="select select-bordered bg-base-200 border-gray-700 font-bold h-10 rounded-full min-h-0 w-24 px-3"
               value={customUnit}
               onChange={(e) => setCustomUnit(e.target.value as any)}
@@ -99,17 +119,21 @@ const FrequencySelector = ({
               <option value="year">{t('habit.frequency.year')}</option>
             </select>
           </div>
-          
+
           <div className="flex items-center gap-2 shrink-0">
-            <span className="font-bold text-gray-400">{t('habit.frequency.execute')}</span>
-            <input 
-              type="number" 
-              min="1" 
-              className="input input-bordered w-14 bg-base-200 border-gray-700 font-bold h-10 rounded-full px-1 text-center" 
+            <span className="font-bold text-gray-400">
+              {t('habit.frequency.execute')}
+            </span>
+            <input
+              type="number"
+              min="1"
+              className="input input-bordered w-14 bg-base-200 border-gray-700 font-bold h-10 rounded-full px-1 text-center"
               value={customCount}
               onChange={(e) => setCustomCount(parseInt(e.target.value) || 1)}
             />
-            <span className="font-bold text-gray-400">{t('habit.frequency.times')}</span>
+            <span className="font-bold text-gray-400">
+              {t('habit.frequency.times')}
+            </span>
           </div>
         </div>
       )}

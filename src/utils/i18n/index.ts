@@ -10,12 +10,12 @@ i18n
   .init({
     resources: {
       en: { translation: en },
-      'zh-TW': { translation: zhTW }
+      'zh-TW': { translation: zhTW },
     },
     fallbackLng: 'zh-TW',
     interpolation: {
-      escapeValue: false
-    }
+      escapeValue: false,
+    },
   });
 
 export default i18n;

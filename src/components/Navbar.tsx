@@ -29,22 +29,31 @@ const Navbar = () => {
     <>
       <div className="navbar bg-base-100 shadow-lg px-6 sm:px-12 h-20 flex flex-row items-center border-b border-base-300/20 relative z-[100]">
         <div className="flex-1">
-          <Link to="/" className="btn btn-ghost text-4xl font-black italic tracking-tighter text-primary normal-case hover:bg-transparent px-0">
+          <Link
+            to="/"
+            className="btn btn-ghost text-4xl font-black italic tracking-tighter text-primary normal-case hover:bg-transparent px-0"
+          >
             LifeCommit
           </Link>
         </div>
 
         <div className="flex flex-row items-center gap-2 sm:gap-4">
-          <button onClick={toggleLanguage} className="btn btn-ghost btn-circle hover:bg-base-200">
+          <button
+            onClick={toggleLanguage}
+            className="btn btn-ghost btn-circle hover:bg-base-200"
+          >
             <Languages size={24} />
           </button>
 
-          <button onClick={toggleTheme} className="btn btn-ghost btn-circle hover:bg-base-200">
+          <button
+            onClick={toggleTheme}
+            className="btn btn-ghost btn-circle hover:bg-base-200"
+          >
             {theme === 'light' ? <Moon size={24} /> : <Sun size={24} />}
           </button>
 
           {user ? (
-            <button 
+            <button
               onClick={() => setIsSidebarOpen(true)}
               className="btn btn-ghost btn-circle avatar ml-2 ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden"
             >
@@ -58,10 +67,16 @@ const Navbar = () => {
             </button>
           ) : (
             <div className="flex flex-row items-center gap-3 ml-2">
-              <Link to="/login" className="btn btn-ghost px-4 min-h-0 h-10 font-bold hover:bg-base-200 rounded-xl text-base">
+              <Link
+                to="/login"
+                className="btn btn-ghost px-4 min-h-0 h-10 font-bold hover:bg-base-200 rounded-xl text-base"
+              >
                 {t('common.login')}
               </Link>
-              <Link to="/register" className="btn btn-primary px-6 min-h-0 h-10 font-black italic rounded-xl shadow-lg shadow-primary/20 uppercase tracking-tighter text-base">
+              <Link
+                to="/register"
+                className="btn btn-primary px-6 min-h-0 h-10 font-black italic rounded-xl shadow-lg shadow-primary/20 uppercase tracking-tighter text-base"
+              >
                 {t('common.register')}
               </Link>
             </div>
@@ -69,7 +84,10 @@ const Navbar = () => {
         </div>
       </div>
 
-      <UserSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <UserSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
     </>
   );
 };

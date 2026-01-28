@@ -13,27 +13,31 @@ const IconPicker = ({ selectedIcon, onSelect }: IconPickerProps) => {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [showPicker, setShowPicker] = useState(false);
-  const filteredIcons = ICON_MAPPING.filter(item => {
+  const filteredIcons = ICON_MAPPING.filter((item) => {
     const translatedName = t(`icons.${item.label}`);
     const searchLower = searchTerm.toLowerCase();
     return (
-      item.name.toLowerCase().includes(searchLower) || 
+      item.name.toLowerCase().includes(searchLower) ||
       translatedName.includes(searchTerm) ||
-      item.tags.some(tag => tag.includes(searchTerm))
+      item.tags.some((tag) => tag.includes(searchTerm))
     );
   });
 
   const IconData = (Icons as any)[selectedIcon];
   const SelectedIconComponent = IconData || Target;
-  const currentIconInfo = ICON_MAPPING.find(i => i.name === selectedIcon);
-  const displayLabel = currentIconInfo ? t(`icons.${currentIconInfo.label}`) : selectedIcon;
+  const currentIconInfo = ICON_MAPPING.find((i) => i.name === selectedIcon);
+  const displayLabel = currentIconInfo
+    ? t(`icons.${currentIconInfo.label}`)
+    : selectedIcon;
 
   return (
     <div className="form-control w-full relative">
       <label className="label py-1 px-0">
-        <span className="label-text text-gray-400 font-bold uppercase text-xs">{t('habit.icon')}</span>
+        <span className="label-text text-gray-400 font-bold uppercase text-xs">
+          {t('habit.icon')}
+        </span>
       </label>
-      
+
       <button
         type="button"
         onClick={() => setShowPicker(!showPicker)}
@@ -57,7 +61,13 @@ const IconPicker = ({ selectedIcon, onSelect }: IconPickerProps) => {
               onChange={(e) => setSearchTerm(e.target.value)}
               autoFocus
             />
-            {searchTerm && <X size={16} className="cursor-pointer hover:text-white" onClick={() => setSearchTerm('')} />}
+            {searchTerm && (
+              <X
+                size={16}
+                className="cursor-pointer hover:text-white"
+                onClick={() => setSearchTerm('')}
+              />
+            )}
           </div>
 
           <div className="grid grid-cols-5 gap-2 max-h-56 overflow-y-auto pr-2 custom-scrollbar">
@@ -75,8 +85,8 @@ const IconPicker = ({ selectedIcon, onSelect }: IconPickerProps) => {
                     setSearchTerm('');
                   }}
                   className={`flex items-center justify-center p-3 rounded-xl transition-all ${
-                    isSelected 
-                      ? 'bg-primary text-primary-content shadow-lg shadow-primary/20' 
+                    isSelected
+                      ? 'bg-primary text-primary-content shadow-lg shadow-primary/20'
                       : 'hover:bg-base-200 text-gray-400 hover:text-white'
                   }`}
                 >

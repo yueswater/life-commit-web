@@ -14,15 +14,22 @@ import { format } from 'date-fns';
 const Dashboard = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingHabit, setEditingHabit] = useState<any>(null);
   const [habits, setHabits] = useState<any[]>([]);
   const [activeHabitId, setActiveHabitId] = useState<string | null>(null);
   const [refreshGridKey, setRefreshGridKey] = useState(0);
 
-  const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
-  const [confirmConfig, setConfirmConfig] = useState<{ id: string; title: string; message: string } | null>(null);
+  const [toast, setToast] = useState<{
+    message: string;
+    type: ToastType;
+  } | null>(null);
+  const [confirmConfig, setConfirmConfig] = useState<{
+    id: string;
+    title: string;
+    message: string;
+  } | null>(null);
 
   const showToast = (message: string, type: ToastType = 'success') => {
     setToast({ message, type });
@@ -33,7 +40,7 @@ const Dashboard = () => {
       .from('habits')
       .select('*')
       .order('created_at', { ascending: false });
-    
+
     if (data) {
       setHabits(data);
       if (data.length > 0 && !activeHabitId) {
@@ -46,50 +53,56 @@ const Dashboard = () => {
     fetchHabits();
   }, []);
 
-  const handleCommit = useCallback(async (habitId: string) => {
-    if (!user) return;
-    const today = format(new Date(), 'yyyy-MM-dd');
+  const handleCommit = useCallback(
+    async (habitId: string) => {
+      if (!user) return;
+      const today = format(new Date(), 'yyyy-MM-dd');
 
-    const { data: existing } = await supabase
-      .from('habit_commits')
-      .select('id, count')
-      .eq('habit_id', habitId)
-      .eq('execution_date', today)
-      .maybeSingle();
+      const { data: existing } = await supabase
+        .from('habit_commits')
+        .select('id, count')
+        .eq('habit_id', habitId)
+        .eq('execution_date', today)
+        .maybeSingle();
 
-    try {
-      if (existing) {
-        await supabase
-          .from('habit_commits')
-          .update({ count: (existing.count || 0) + 1 })
-          .eq('id', existing.id);
-      } else {
-        await supabase.from('habit_commits').insert({
-          habit_id: habitId,
-          user_id: user.id,
-          execution_date: today,
-          count: 1,
-        });
+      try {
+        if (existing) {
+          await supabase
+            .from('habit_commits')
+            .update({ count: (existing.count || 0) + 1 })
+            .eq('id', existing.id);
+        } else {
+          await supabase.from('habit_commits').insert({
+            habit_id: habitId,
+            user_id: user.id,
+            execution_date: today,
+            count: 1,
+          });
+        }
+        showToast(t('common.saveSuccess'));
+        setRefreshGridKey((prev) => prev + 1);
+      } catch (error) {
+        showToast(t('common.error'), 'error');
       }
-      showToast(t('common.saveSuccess'));
-      setRefreshGridKey(prev => prev + 1);
-    } catch (error) {
-      showToast(t('common.error'), 'error');
-    }
-  }, [user, t]);
+    },
+    [user, t]
+  );
 
   const handleDeleteClick = (id: string) => {
     setConfirmConfig({
       id,
       title: t('habit.deleteConfirmTitle'),
-      message: t('habit.deleteConfirmMessage')
+      message: t('habit.deleteConfirmMessage'),
     });
   };
 
   const executeDelete = async () => {
     if (!confirmConfig) return;
-    const { error } = await supabase.from('habits').delete().eq('id', confirmConfig.id);
-    
+    const { error } = await supabase
+      .from('habits')
+      .delete()
+      .eq('id', confirmConfig.id);
+
     if (!error) {
       if (activeHabitId === confirmConfig.id) setActiveHabitId(null);
       showToast(t('common.deleteSuccess'));
@@ -118,7 +131,7 @@ const Dashboard = () => {
               <h2 className="text-xl font-black italic tracking-tighter text-primary uppercase">
                 {t('habit.myHabits')}
               </h2>
-              <button 
+              <button
                 onClick={() => {
                   setEditingHabit(null);
                   setIsModalOpen(true);
@@ -128,12 +141,12 @@ const Dashboard = () => {
                 <Plus size={18} />
               </button>
             </div>
-            
+
             <div className="flex-grow">
-              <HabitListSection 
-                habits={habits} 
-                activeHabitId={activeHabitId} 
-                onSelectHabit={setActiveHabitId} 
+              <HabitListSection
+                habits={habits}
+                activeHabitId={activeHabitId}
+                onSelectHabit={setActiveHabitId}
                 onCommitHabit={handleCommit}
                 onEditHabit={handleEditHabit}
                 onDeleteHabit={handleDeleteClick}
@@ -146,7 +159,10 @@ const Dashboard = () => {
           <div className="w-full">
             {activeHabitId ? (
               <div className="w-full animate-in fade-in slide-in-from-bottom-4 duration-700 flex justify-center">
-                 <HabitGrid key={`${activeHabitId}-${refreshGridKey}`} habitId={activeHabitId} />
+                <HabitGrid
+                  key={`${activeHabitId}-${refreshGridKey}`}
+                  habitId={activeHabitId}
+                />
               </div>
             ) : (
               <div className="w-full h-[300px] bg-base-200/20 rounded-[2.5rem] border-2 border-gray-800 border-dashed flex items-center justify-center">
@@ -159,28 +175,30 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <AddHabitModal 
-        isOpen={isModalOpen} 
+      <AddHabitModal
+        isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
           setEditingHabit(null);
-        }} 
+        }}
         onSuccess={() => {
           fetchHabits();
-          showToast(editingHabit ? t('common.updateSuccess') : t('common.createSuccess'));
+          showToast(
+            editingHabit ? t('common.updateSuccess') : t('common.createSuccess')
+          );
         }}
         editData={editingHabit}
       />
 
       {toast && (
-        <Toast 
-          message={toast.message} 
-          type={toast.type} 
-          onClose={() => setToast(null)} 
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
         />
       )}
 
-      <ConfirmModal 
+      <ConfirmModal
         isOpen={!!confirmConfig}
         title={confirmConfig?.title || ''}
         message={confirmConfig?.message || ''}

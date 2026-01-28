@@ -14,7 +14,7 @@ const AvatarUpload = () => {
         alert('請先登入');
         return;
       }
-      
+
       if (!event.target.files || event.target.files.length === 0) return;
 
       const file = event.target.files[0];
@@ -27,9 +27,7 @@ const AvatarUpload = () => {
 
       if (uploadError) throw uploadError;
 
-      const { data } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(filePath);
+      const { data } = supabase.storage.from('avatars').getPublicUrl(filePath);
 
       const publicUrl = data.publicUrl;
 
@@ -39,7 +37,7 @@ const AvatarUpload = () => {
         .eq('id', user.id);
 
       if (updateError) throw updateError;
-      
+
       alert('上傳成功！');
       window.location.reload();
     } catch (error: any) {
@@ -54,7 +52,11 @@ const AvatarUpload = () => {
       <div className="relative group">
         <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-primary ring-offset-4 bg-neutral">
           {profile?.avatar ? (
-            <img src={profile.avatar} alt="avatar" className="w-full h-full object-cover" />
+            <img
+              src={profile.avatar}
+              alt="avatar"
+              className="w-full h-full object-cover"
+            />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-neutral-content">
               {profile?.username?.[0]?.toUpperCase() || '?'}
@@ -62,8 +64,18 @@ const AvatarUpload = () => {
           )}
         </div>
         <label className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 rounded-full cursor-pointer transition-opacity">
-          {uploading ? <Loader2 className="animate-spin text-white" /> : <Camera className="text-white" />}
-          <input type="file" className="hidden" accept="image/*" onChange={uploadAvatar} disabled={uploading} />
+          {uploading ? (
+            <Loader2 className="animate-spin text-white" />
+          ) : (
+            <Camera className="text-white" />
+          )}
+          <input
+            type="file"
+            className="hidden"
+            accept="image/*"
+            onChange={uploadAvatar}
+            disabled={uploading}
+          />
         </label>
       </div>
     </div>

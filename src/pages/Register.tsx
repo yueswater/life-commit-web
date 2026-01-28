@@ -29,7 +29,9 @@ const Register = () => {
         <div className="grid grid-cols-2 gap-4">
           <div className="form-control text-left">
             <label className="label py-1">
-              <span className="label-text text-gray-400 font-bold">{t('common.firstName')}</span>
+              <span className="label-text text-gray-400 font-bold">
+                {t('common.firstName')}
+              </span>
             </label>
             <input
               type="text"
@@ -39,7 +41,9 @@ const Register = () => {
           </div>
           <div className="form-control text-left">
             <label className="label py-1">
-              <span className="label-text text-gray-400 font-bold">{t('common.lastName')}</span>
+              <span className="label-text text-gray-400 font-bold">
+                {t('common.lastName')}
+              </span>
             </label>
             <input
               type="text"
@@ -51,7 +55,9 @@ const Register = () => {
 
         <div className="form-control w-full text-left">
           <label className="label py-1">
-            <span className="label-text text-gray-400 font-bold">{t('common.username')}</span>
+            <span className="label-text text-gray-400 font-bold">
+              {t('common.username')}
+            </span>
           </label>
           <input
             type="text"
@@ -63,7 +69,9 @@ const Register = () => {
 
         <div className="form-control w-full text-left">
           <label className="label py-1">
-            <span className="label-text text-gray-400 font-bold">{t('common.email')}</span>
+            <span className="label-text text-gray-400 font-bold">
+              {t('common.email')}
+            </span>
           </label>
           <input
             type="email"
@@ -75,7 +83,9 @@ const Register = () => {
 
         <div className="form-control w-full text-left">
           <label className="label py-1">
-            <span className="label-text text-gray-400 font-bold">{t('common.password')}</span>
+            <span className="label-text text-gray-400 font-bold">
+              {t('common.password')}
+            </span>
           </label>
           <div className="relative">
             <input
@@ -103,7 +113,10 @@ const Register = () => {
 
         <div className="text-center mt-2">
           <span className="text-gray-400">{t('common.hasAccount')} </span>
-          <Link to="/login" className="text-gray-600 hover:text-white font-bold">
+          <Link
+            to="/login"
+            className="text-gray-600 hover:text-white font-bold"
+          >
             {t('common.login')}
           </Link>
         </div>

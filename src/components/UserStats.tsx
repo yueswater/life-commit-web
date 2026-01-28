@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../services/supabase';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +15,7 @@ const UserStats = ({ habitCount, refreshKey }: UserStatsProps) => {
 
   const fetchTotalCommits = async () => {
     if (!user) return;
-    
+
     const { data, error } = await supabase
       .from('habit_commits')
       .select('count')
@@ -47,13 +47,17 @@ const UserStats = ({ habitCount, refreshKey }: UserStatsProps) => {
           <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">
             {t('stats.habits')}
           </span>
-          <span className="text-3xl font-black text-white italic">{habitCount}</span>
+          <span className="text-3xl font-black text-white italic">
+            {habitCount}
+          </span>
         </div>
         <div className="flex flex-col">
           <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1 text-primary">
             {t('stats.commits')}
           </span>
-          <span className="text-3xl font-black text-white italic">{totalCommits}</span>
+          <span className="text-3xl font-black text-white italic">
+            {totalCommits}
+          </span>
         </div>
       </div>
     </div>

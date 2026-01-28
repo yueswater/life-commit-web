@@ -14,17 +14,19 @@ interface HabitTileProps {
   isPlaceholder?: boolean;
 }
 
-const HabitTile = ({ 
-  name, 
-  iconName, 
-  isActive, 
-  onClick, 
-  onCommit, 
-  onEdit, 
-  onDelete, 
-  isPlaceholder 
+const HabitTile = ({
+  name,
+  iconName,
+  isActive,
+  onClick,
+  onCommit,
+  onEdit,
+  onDelete,
+  isPlaceholder,
 }: HabitTileProps) => {
-  const IconComponent = iconName ? (Icons as any)[iconName] || Icons.Target : null;
+  const IconComponent = iconName
+    ? (Icons as any)[iconName] || Icons.Target
+    : null;
   const [progress, setProgress] = useState(0);
   const [isPressing, setIsPressing] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -32,11 +34,11 @@ const HabitTile = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const DURATION = 3000;
 
-  const handleStart = (e: React.MouseEvent | React.TouchEvent) => {
+  const handleStart = () => {
     if (isPlaceholder) return;
     setIsPressing(true);
     startTimeRef.current = Date.now();
-    
+
     timerRef.current = setInterval(() => {
       if (startTimeRef.current) {
         const elapsed = Date.now() - startTimeRef.current;
@@ -61,7 +63,7 @@ const HabitTile = ({
 
   const triggerSuccess = () => {
     if (onCommit) onCommit();
-    
+
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
       const x = (rect.left + rect.width / 2) / window.innerWidth;
@@ -71,7 +73,7 @@ const HabitTile = ({
         particleCount: 100,
         spread: 70,
         origin: { x, y },
-        colors: ['#eeba2c', '#ffffff', '#22c55e']
+        colors: ['#eeba2c', '#ffffff', '#22c55e'],
       });
     }
   };
@@ -92,17 +94,17 @@ const HabitTile = ({
         onTouchStart={handleStart}
         onTouchEnd={handleEnd}
         className={`aspect-square flex flex-col items-center justify-center p-2 rounded-2xl border-2 transition-all select-none w-full relative overflow-hidden ${
-          isActive 
-            ? 'bg-primary border-primary text-primary-content shadow-lg shadow-primary/20 scale-[1.02]' 
+          isActive
+            ? 'bg-primary border-primary text-primary-content shadow-lg shadow-primary/20 scale-[1.02]'
             : 'bg-base-200 border-gray-800 text-gray-500 hover:border-primary/50 hover:text-white'
         }`}
       >
         {isPressing && (
-          <div 
+          <div
             className="absolute bottom-0 left-0 w-full transition-all duration-75 pointer-events-none flex items-center justify-center overflow-hidden"
-            style={{ 
+            style={{
               height: `${progress}%`,
-              backgroundColor: '#eeba2c'
+              backgroundColor: '#eeba2c',
             }}
           >
             <span className="text-[16px] font-black text-black absolute top-1/2 -translate-y-1/2">
@@ -110,12 +112,14 @@ const HabitTile = ({
             </span>
           </div>
         )}
-        
-        <div className={`relative z-10 flex flex-col items-center transition-transform ${isPressing ? 'opacity-20 scale-90' : 'opacity-100'}`}>
+
+        <div
+          className={`relative z-10 flex flex-col items-center transition-transform ${isPressing ? 'opacity-20 scale-90' : 'opacity-100'}`}
+        >
           {IconComponent && (
-            <IconComponent 
-              size={36} 
-              className={`mb-2 transition-transform ${isActive ? 'scale-110' : 'group-hover/tile:scale-110'}`} 
+            <IconComponent
+              size={36}
+              className={`mb-2 transition-transform ${isActive ? 'scale-110' : 'group-hover/tile:scale-110'}`}
             />
           )}
           <span className="text-[11px] font-black uppercase truncate w-full text-center tracking-tighter leading-none px-1">
@@ -126,7 +130,10 @@ const HabitTile = ({
 
       <div className="absolute top-1.5 left-1.5 flex gap-1 opacity-0 group-hover/tile:opacity-100 transition-opacity z-20">
         <button
-          onClick={(e) => { e.stopPropagation(); onEdit?.(e); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onEdit?.(e);
+          }}
           className="p-1.5 rounded-lg bg-black/60 hover:bg-black text-white transition-colors"
         >
           <Pencil size={12} />
@@ -135,7 +142,10 @@ const HabitTile = ({
 
       <div className="absolute top-1.5 right-1.5 flex gap-1 opacity-0 group-hover/tile:opacity-100 transition-opacity z-20">
         <button
-          onClick={(e) => { e.stopPropagation(); onDelete?.(e); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete?.(e);
+          }}
           className="p-1.5 rounded-lg bg-error hover:bg-error/80 text-white transition-colors"
         >
           <Trash2 size={12} />

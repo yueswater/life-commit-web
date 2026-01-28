@@ -14,21 +14,30 @@ interface AddHabitModalProps {
   editData?: any;
 }
 
-const AddHabitModal = ({ isOpen, onClose, onSuccess, editData }: AddHabitModalProps) => {
+const AddHabitModal = ({
+  isOpen,
+  onClose,
+  onSuccess,
+  editData,
+}: AddHabitModalProps) => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  
+
   const [name, setName] = useState('');
   const [goalCount, setGoalCount] = useState(1);
   const [memo, setMemo] = useState('');
   const [selectedTagId, setSelectedTagId] = useState<string | null>(null);
   const [icon, setIcon] = useState('Target');
-  
-  const [freqType, setFreqType] = useState<'daily' | 'weekly_count' | 'weekly_days' | 'custom'>('daily');
+
+  const [freqType, setFreqType] = useState<
+    'daily' | 'weekly_count' | 'weekly_days' | 'custom'
+  >('daily');
   const [weeklyCount, setWeeklyCount] = useState(3);
   const [selectedDays, setSelectedDays] = useState<number[]>([]);
-  const [customUnit, setCustomUnit] = useState<'day' | 'week' | 'month' | 'year'>('month');
+  const [customUnit, setCustomUnit] = useState<
+    'day' | 'week' | 'month' | 'year'
+  >('month');
   const [customValue, setCustomValue] = useState(1);
   const [customCount, setCustomCount] = useState(1);
 
@@ -65,7 +74,9 @@ const AddHabitModal = ({ isOpen, onClose, onSuccess, editData }: AddHabitModalPr
   };
 
   const toggleDay = (day: number) => {
-    setSelectedDays(prev => prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]);
+    setSelectedDays((prev) =>
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -75,8 +86,10 @@ const AddHabitModal = ({ isOpen, onClose, onSuccess, editData }: AddHabitModalPr
 
     let freqString = freqType as string;
     if (freqType === 'weekly_count') freqString = `weekly_count:${weeklyCount}`;
-    if (freqType === 'weekly_days') freqString = `weekly_days:${selectedDays.sort().join(',')}`;
-    if (freqType === 'custom') freqString = `custom:${customValue}_${customUnit}_${customCount}`;
+    if (freqType === 'weekly_days')
+      freqString = `weekly_days:${selectedDays.sort().join(',')}`;
+    if (freqType === 'custom')
+      freqString = `custom:${customValue}_${customUnit}_${customCount}`;
 
     const habitPayload = {
       user_id: user.id,
@@ -85,10 +98,10 @@ const AddHabitModal = ({ isOpen, onClose, onSuccess, editData }: AddHabitModalPr
       memo,
       tag_id: selectedTagId,
       frequency: freqString,
-      icon: icon
+      icon: icon,
     };
 
-    const request = editData 
+    const request = editData
       ? supabase.from('habits').update(habitPayload).eq('id', editData.id)
       : supabase.from('habits').insert(habitPayload);
 
@@ -132,90 +145,118 @@ const AddHabitModal = ({ isOpen, onClose, onSuccess, editData }: AddHabitModalPr
           </div>
 
           <div className="md:w-3/4 p-10 relative bg-base-100 text-left text-gray-100">
-            <button type="button" onClick={onClose} className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 text-gray-500 hover:text-white transition-colors">
-              <X size={24}/>
+            <button
+              type="button"
+              onClick={onClose}
+              className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 text-gray-500 hover:text-white transition-colors"
+            >
+              <X size={24} />
             </button>
-            
+
             <form onSubmit={handleSubmit} className="flex flex-col gap-6 mt-2">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                 <div className="form-control w-full">
                   <label className="label py-1">
-                    <span className="label-text text-gray-400 font-bold uppercase text-xs">{t('habit.name')}</span>
+                    <span className="label-text text-gray-400 font-bold uppercase text-xs">
+                      {t('habit.name')}
+                    </span>
                   </label>
                   <label className="input input-bordered flex items-center gap-3 bg-base-200 border-gray-700 h-14 rounded-2xl focus-within:border-primary w-full transition-all">
                     <Type size={18} className="text-gray-500" />
-                    <input 
-                      type="text" 
-                      className="grow font-bold bg-transparent border-none outline-none focus:ring-0" 
-                      placeholder={t('habit.namePlaceholder')} 
-                      value={name} 
-                      onChange={(e) => setName(e.target.value)} 
-                      required 
+                    <input
+                      type="text"
+                      className="grow font-bold bg-transparent border-none outline-none focus:ring-0"
+                      placeholder={t('habit.namePlaceholder')}
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
                     />
                   </label>
                 </div>
                 <IconPicker selectedIcon={icon} onSelect={setIcon} />
               </div>
 
-              <FrequencySelector 
-                freqType={freqType} setFreqType={setFreqType}
-                weeklyCount={weeklyCount} setWeeklyCount={setWeeklyCount}
-                selectedDays={selectedDays} toggleDay={toggleDay}
-                customUnit={customUnit} setCustomUnit={setCustomUnit}
-                customValue={customValue} setCustomValue={setCustomValue}
-                customCount={customCount} setCustomCount={setCustomCount}
+              <FrequencySelector
+                freqType={freqType}
+                setFreqType={setFreqType}
+                weeklyCount={weeklyCount}
+                setWeeklyCount={setWeeklyCount}
+                selectedDays={selectedDays}
+                toggleDay={toggleDay}
+                customUnit={customUnit}
+                setCustomUnit={setCustomUnit}
+                customValue={customValue}
+                setCustomValue={setCustomValue}
+                customCount={customCount}
+                setCustomCount={setCustomCount}
               />
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                 <div className="form-control">
                   <label className="label py-1">
-                    <span className="label-text text-gray-400 font-bold uppercase text-xs">{t('habit.dailyGoal')}</span>
+                    <span className="label-text text-gray-400 font-bold uppercase text-xs">
+                      {t('habit.dailyGoal')}
+                    </span>
                   </label>
                   <label className="input input-bordered flex items-center gap-3 bg-base-200 border-gray-700 h-14 rounded-2xl focus-within:border-primary w-full transition-all">
                     <Hash size={18} className="text-gray-500" />
-                    <input 
-                      type="number" 
-                      className="grow font-bold bg-transparent border-none outline-none focus:ring-0" 
-                      min="1" 
-                      value={goalCount} 
-                      onChange={(e) => setGoalCount(parseInt(e.target.value))} 
-                      required 
+                    <input
+                      type="number"
+                      className="grow font-bold bg-transparent border-none outline-none focus:ring-0"
+                      min="1"
+                      value={goalCount}
+                      onChange={(e) => setGoalCount(parseInt(e.target.value))}
+                      required
                     />
                   </label>
                 </div>
-                <TagSearch selectedTagId={selectedTagId} onSelect={(id) => setSelectedTagId(id)} />
+                <TagSearch
+                  selectedTagId={selectedTagId}
+                  onSelect={(id) => setSelectedTagId(id)}
+                />
               </div>
 
               <div className="form-control w-full">
                 <label className="label py-1">
-                  <span className="label-text text-gray-400 font-bold uppercase text-xs">{t('habit.memo')}</span>
+                  <span className="label-text text-gray-400 font-bold uppercase text-xs">
+                    {t('habit.memo')}
+                  </span>
                 </label>
                 <label className="input input-bordered flex items-center gap-3 bg-base-200 border-gray-700 h-14 rounded-2xl focus-within:border-primary w-full transition-all">
                   <FileText size={18} className="text-gray-500" />
-                  <input 
-                    type="text" 
-                    className="grow font-medium bg-transparent border-none outline-none focus:ring-0" 
-                    placeholder={t('habit.memoPlaceholder')} 
-                    value={memo} 
-                    onChange={(e) => setMemo(e.target.value)} 
+                  <input
+                    type="text"
+                    className="grow font-medium bg-transparent border-none outline-none focus:ring-0"
+                    placeholder={t('habit.memoPlaceholder')}
+                    value={memo}
+                    onChange={(e) => setMemo(e.target.value)}
                   />
                 </label>
               </div>
 
               <div className="mt-4">
-                <button 
-                  className="btn btn-primary w-full h-14 rounded-2xl font-black text-lg shadow-xl shadow-primary/20 transition-all hover:scale-[1.01] active:scale-[0.98]" 
-                  type="submit" 
+                <button
+                  className="btn btn-primary w-full h-14 rounded-2xl font-black text-lg shadow-xl shadow-primary/20 transition-all hover:scale-[1.01] active:scale-[0.98]"
+                  type="submit"
                   disabled={loading}
                 >
-                  {loading ? <Loader2 className="animate-spin" /> : (editData ? t('common.save') : t('habit.create'))}
+                  {loading ? (
+                    <Loader2 className="animate-spin" />
+                  ) : editData ? (
+                    t('common.save')
+                  ) : (
+                    t('habit.create')
+                  )}
                 </button>
               </div>
             </form>
           </div>
         </div>
       </div>
-      <div className="modal-backdrop bg-black/80 backdrop-blur-sm" onClick={onClose}></div>
+      <div
+        className="modal-backdrop bg-black/80 backdrop-blur-sm"
+        onClick={onClose}
+      ></div>
     </div>
   );
 };

@@ -33,9 +33,9 @@ const Login = () => {
       loginEmail = data.email as string;
     }
 
-    const { error } = await supabase.auth.signInWithPassword({ 
-      email: loginEmail, 
-      password 
+    const { error } = await supabase.auth.signInWithPassword({
+      email: loginEmail,
+      password,
     });
 
     if (error) alert(error.message);
@@ -62,7 +62,9 @@ const Login = () => {
 
         <div className="form-control w-full text-left">
           <label className="label py-1">
-            <span className="label-text text-gray-400 font-bold">{t('common.password')}</span>
+            <span className="label-text text-gray-400 font-bold">
+              {t('common.password')}
+            </span>
           </label>
           <div className="relative">
             <input
@@ -90,11 +92,16 @@ const Login = () => {
           {t('common.login')}
         </button>
 
-        <div className="divider text-gray-600 text-xs px-4">{t('common.or')}</div>
+        <div className="divider text-gray-600 text-xs px-4">
+          {t('common.or')}
+        </div>
 
         <div className="text-center">
           <span className="text-gray-400">{t('common.noAccount')} </span>
-          <Link to="/register" className="text-gray-600 hover:text-white font-bold">
+          <Link
+            to="/register"
+            className="text-gray-600 hover:text-white font-bold"
+          >
             {t('common.register')}
           </Link>
         </div>

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "daisyui";
 
 @theme {
@@ -6,7 +6,8 @@
   --color-primary-content: #161616;
 }
 
-:root, [data-theme] {
+:root,
+[data-theme] {
   --p: 0.78 0.16 85 !important;
   --primary: #eeba2c !important;
   --primary-content: #161616 !important;
@@ -20,7 +21,9 @@
 }
 
 @layer base {
-  html, body, #root {
+  html,
+  body,
+  #root {
     height: 100%;
     margin: 0;
     @apply bg-base-200 antialiased;

@@ -3,7 +3,11 @@ export const ICON_MAPPING = [
   { name: 'Flame', label: 'flame', tags: ['熱門', '火焰', '連勝', '追蹤'] },
   { name: 'Book', label: 'book', tags: ['閱讀', '書', '學習', '知識'] },
   { name: 'Coffee', label: 'coffee', tags: ['咖啡', '休息', '下午茶'] },
-  { name: 'Dumbbell', label: 'dumbbell', tags: ['健身', '運動', '重量', '訓練'] },
+  {
+    name: 'Dumbbell',
+    label: 'dumbbell',
+    tags: ['健身', '運動', '重量', '訓練'],
+  },
   { name: 'Code', label: 'code', tags: ['程式', '開發', '寫程式', '電腦'] },
   { name: 'Music', label: 'music', tags: ['音樂', '聽歌', '練習', '鋼琴'] },
   { name: 'Heart', label: 'heart', tags: ['健康', '愛心', '心情', '冥想'] },
@@ -15,7 +19,11 @@ export const ICON_MAPPING = [
   { name: 'Coins', label: 'coins', tags: ['存錢', '理財', '投資'] },
   { name: 'Gamepad', label: 'gamepad', tags: ['遊戲', '娛樂', '放鬆'] },
   { name: 'GraduationCap', label: 'education', tags: ['學業', '畢業', '進修'] },
-  { name: 'Languages', label: 'language', tags: ['語言', '翻譯', '英文', '日文'] },
+  {
+    name: 'Languages',
+    label: 'language',
+    tags: ['語言', '翻譯', '英文', '日文'],
+  },
   { name: 'Laptop', label: 'laptop', tags: ['遠端', '電腦', '筆電'] },
   { name: 'Leaf', label: 'leaf', tags: ['環保', '植物', '素食', '自然'] },
   { name: 'Moon', label: 'moon', tags: ['睡眠', '夜晚', '冥想'] },
@@ -35,5 +43,5 @@ export const ICON_MAPPING = [
   { name: 'Brush', label: 'brush', tags: ['藝術', '畫畫', '設計'] },
   { name: 'Calculator', label: 'math', tags: ['數學', '計算', '記帳'] },
   { name: 'Compass', label: 'compass', tags: ['方向', '探險', '規劃'] },
-  { name: 'Drum', label: 'drum', tags: ['樂器', '節奏', '音樂'] }
+  { name: 'Drum', label: 'drum', tags: ['樂器', '節奏', '音樂'] },
 ];

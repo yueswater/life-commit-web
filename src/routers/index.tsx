@@ -12,10 +12,22 @@ const AppRouter = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} />
-      <Route path="/settings" element={user ? <Settings /> : <Navigate to="/login" />} />
-      <Route path="/login" element={!user ? <Login /> : <Navigate to="/dashboard" />} />
-      <Route path="/register" element={!user ? <Register /> : <Navigate to="/dashboard" />} />
+      <Route
+        path="/dashboard"
+        element={user ? <Dashboard /> : <Navigate to="/login" />}
+      />
+      <Route
+        path="/settings"
+        element={user ? <Settings /> : <Navigate to="/login" />}
+      />
+      <Route
+        path="/login"
+        element={!user ? <Login /> : <Navigate to="/dashboard" />}
+      />
+      <Route
+        path="/register"
+        element={!user ? <Register /> : <Navigate to="/dashboard" />}
+      />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import HabitTile from './HabitTile';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -17,13 +17,13 @@ interface HabitListSectionProps {
   onDeleteHabit: (id: string) => void;
 }
 
-const HabitListSection = ({ 
-  habits, 
-  activeHabitId, 
-  onSelectHabit, 
+const HabitListSection = ({
+  habits,
+  activeHabitId,
+  onSelectHabit,
   onCommitHabit,
   onEditHabit,
-  onDeleteHabit
+  onDeleteHabit,
 }: HabitListSectionProps) => {
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 10;
@@ -36,7 +36,11 @@ const HabitListSection = ({
 
   const displayTiles = [...paginatedHabits];
   while (displayTiles.length < itemsPerPage) {
-    displayTiles.push({ id: `placeholder-${displayTiles.length}`, name: '', icon: '' });
+    displayTiles.push({
+      id: `placeholder-${displayTiles.length}`,
+      name: '',
+      icon: '',
+    });
   }
 
   return (
@@ -49,8 +53,12 @@ const HabitListSection = ({
             iconName={habit.icon}
             isActive={activeHabitId === habit.id}
             isPlaceholder={!habit.name}
-            onClick={() => habit.id.includes('placeholder') ? null : onSelectHabit(habit.id)}
-            onCommit={() => habit.id.includes('placeholder') ? null : onCommitHabit(habit.id)}
+            onClick={() =>
+              habit.id.includes('placeholder') ? null : onSelectHabit(habit.id)
+            }
+            onCommit={() =>
+              habit.id.includes('placeholder') ? null : onCommitHabit(habit.id)
+            }
             onEdit={(e) => {
               e.stopPropagation();
               onEditHabit(habit);
@@ -62,12 +70,12 @@ const HabitListSection = ({
           />
         ))}
       </div>
-      
+
       {totalPages > 1 && (
         <div className="flex justify-end items-center gap-4 mt-4">
-          <button 
+          <button
             disabled={currentPage === 0}
-            onClick={() => setCurrentPage(p => p - 1)}
+            onClick={() => setCurrentPage((p) => p - 1)}
             className="btn btn-xs btn-circle btn-ghost disabled:opacity-20"
           >
             <ChevronLeft size={16} />
@@ -75,9 +83,9 @@ const HabitListSection = ({
           <span className="text-[10px] font-black text-gray-500 tracking-tighter uppercase">
             {currentPage + 1} / {totalPages}
           </span>
-          <button 
+          <button
             disabled={currentPage === totalPages - 1}
-            onClick={() => setCurrentPage(p => p + 1)}
+            onClick={() => setCurrentPage((p) => p + 1)}
             className="btn btn-xs btn-circle btn-ghost disabled:opacity-20"
           >
             <ChevronRight size={16} />
