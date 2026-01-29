@@ -22,7 +22,7 @@ const Register = () => {
       password,
       options: { data: { username } },
     });
-    
+
     setLoading(false);
     if (error) {
       alert(error.message);
@@ -32,7 +32,8 @@ const Register = () => {
     }
   };
 
-  const inputStyle = "input input-bordered w-full bg-base-200 border-base-300 text-base-content rounded-2xl h-14 focus:border-primary transition-all";
+  const inputStyle =
+    'input input-bordered w-full bg-base-200 border-base-300 text-base-content rounded-2xl h-14 focus:border-primary transition-all';
 
   return (
     <Card title={t('auth.createAccount')}>
@@ -116,7 +117,9 @@ const Register = () => {
         </button>
 
         <div className="text-center mt-2">
-          <span className="text-base-content/60 font-medium">{t('common.hasAccount')} </span>
+          <span className="text-base-content/60 font-medium">
+            {t('common.hasAccount')}{' '}
+          </span>
           <Link
             to="/login"
             className="text-primary hover:underline font-black uppercase tracking-tighter"

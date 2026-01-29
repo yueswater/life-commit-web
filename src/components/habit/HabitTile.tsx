@@ -34,7 +34,7 @@ const HabitTile = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const DURATION = 2000;
 
-  const handleStart = (e: React.MouseEvent | React.TouchEvent) => {
+  const handleStart = () => {
     if (isPlaceholder) return;
     setIsPressing(true);
     startTimeRef.current = Date.now();

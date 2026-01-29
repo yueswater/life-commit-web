@@ -6,7 +6,6 @@ import Home from '@/pages/home/Home';
 import Settings from '@/pages/settings/Settings';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-
 const AppRouter = () => {
   const { user } = useAuth();
 

@@ -15,7 +15,7 @@ const HeroPreview = () => {
             <div className="w-3 h-3 rounded-full bg-[#ffbd2e] shadow-inner"></div>
             <div className="w-3 h-3 rounded-full bg-[#27c93f] shadow-inner"></div>
           </div>
-          
+
           <div className="flex gap-1 h-full pt-2">
             <div className="px-4 py-1 bg-white dark:bg-[#0d1117] rounded-t-lg border-t border-x border-gray-200 dark:border-gray-800 text-[10px] font-bold text-gray-600 dark:text-gray-300 flex items-center gap-2">
               <div className="w-2 h-2 rounded-sm bg-primary animate-pulse"></div>
@@ -43,13 +43,17 @@ const HeroPreview = () => {
                   <span className="text-[9px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1">
                     {t('stats.habits')}
                   </span>
-                  <span className="text-3xl font-black text-gray-900 dark:text-white italic">2</span>
+                  <span className="text-3xl font-black text-gray-900 dark:text-white italic">
+                    2
+                  </span>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-[9px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1 text-primary">
                     {t('stats.commits')}
                   </span>
-                  <span className="text-3xl font-black text-gray-900 dark:text-white italic">9</span>
+                  <span className="text-3xl font-black text-gray-900 dark:text-white italic">
+                    9
+                  </span>
                 </div>
               </div>
             </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/services/supabase';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +13,7 @@ const UserStats = ({ habitCount, refreshKey }: UserStatsProps) => {
   const { t } = useTranslation();
   const [totalCommits, setTotalCommits] = useState<number>(0);
 
-  const fetchTotalCommits = async () => {
+  const fetchTotalCommits = useCallback(async () => {
     if (!user) return;
 
     const { data, error } = await supabase
@@ -25,11 +25,11 @@ const UserStats = ({ habitCount, refreshKey }: UserStatsProps) => {
       const sum = data.reduce((acc, curr) => acc + (curr.count || 0), 0);
       setTotalCommits(sum);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     fetchTotalCommits();
-  }, [user, habitCount, refreshKey]);
+  }, [fetchTotalCommits, habitCount, refreshKey]);
 
   return (
     <div className="bg-base-100 border border-base-300 rounded-3xl p-8 w-full h-full flex flex-col justify-between min-h-[220px] shadow-xl transition-all duration-300">

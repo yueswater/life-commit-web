@@ -47,7 +47,9 @@ const IconPicker = ({ selectedIcon, onSelect }: IconPickerProps) => {
         <div className="p-2 bg-primary/10 rounded-xl text-primary shrink-0 group-hover:bg-primary/20 transition-colors">
           <SelectedIconComponent size={24} />
         </div>
-        <span className="font-bold text-base-content truncate">{displayLabel}</span>
+        <span className="font-bold text-base-content truncate">
+          {displayLabel}
+        </span>
       </button>
 
       {showPicker && (

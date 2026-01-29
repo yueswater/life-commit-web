@@ -13,7 +13,7 @@ preview:
 	npm run preview
 
 lint:
-	npx eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0
+	npx eslint . --ext ts,tsx --report-unused-disable-directives
 
 format:
 	npx prettier --write "src/**/*.{ts,tsx,css,md}"

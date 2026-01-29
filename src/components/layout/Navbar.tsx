@@ -36,10 +36,10 @@ const Navbar = () => {
 
   return (
     <>
-      <div 
+      <div
         className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 px-6 sm:px-12 h-20 flex flex-row items-center border-b ${
-          isScrolled 
-            ? 'bg-base-100/70 backdrop-blur-xl border-base-300/20 shadow-lg' 
+          isScrolled
+            ? 'bg-base-100/70 backdrop-blur-xl border-base-300/20 shadow-lg'
             : 'bg-base-100 border-transparent'
         }`}
       >

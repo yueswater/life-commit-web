@@ -41,18 +41,19 @@ const AddHabitModal = ({
   const [customValue, setCustomValue] = useState(1);
   const [customCount, setCustomCount] = useState(1);
 
-  useEffect(() => {
-    if (editData && isOpen) {
-      setName(editData.name || '');
-      setGoalCount(editData.goal_count || 1);
-      setMemo(editData.memo || '');
-      setSelectedTagId(editData.tag_id || null);
-      setIcon(editData.icon || 'Target');
-      parseFrequency(editData.frequency);
-    } else if (isOpen) {
-      resetForm();
-    }
-  }, [editData, isOpen]);
+  const resetForm = () => {
+    setName('');
+    setGoalCount(1);
+    setMemo('');
+    setSelectedTagId(null);
+    setFreqType('daily');
+    setWeeklyCount(3);
+    setSelectedDays([]);
+    setCustomValue(1);
+    setCustomCount(1);
+    setCustomUnit('month');
+    setIcon('Target');
+  };
 
   const parseFrequency = (freq: string) => {
     if (!freq) return;
@@ -72,6 +73,19 @@ const AddHabitModal = ({
       setCustomCount(parseInt(parts[2]));
     }
   };
+
+  useEffect(() => {
+    if (editData && isOpen) {
+      setName(editData.name || '');
+      setGoalCount(editData.goal_count || 1);
+      setMemo(editData.memo || '');
+      setSelectedTagId(editData.tag_id || null);
+      setIcon(editData.icon || 'Target');
+      parseFrequency(editData.frequency);
+    } else if (isOpen) {
+      resetForm();
+    }
+  }, [editData, isOpen]);
 
   const toggleDay = (day: number) => {
     setSelectedDays((prev) =>
@@ -115,20 +129,6 @@ const AddHabitModal = ({
       onClose();
       resetForm();
     }
-  };
-
-  const resetForm = () => {
-    setName('');
-    setGoalCount(1);
-    setMemo('');
-    setSelectedTagId(null);
-    setFreqType('daily');
-    setWeeklyCount(3);
-    setSelectedDays([]);
-    setCustomValue(1);
-    setCustomCount(1);
-    setCustomUnit('month');
-    setIcon('Target');
   };
 
   if (!isOpen) return null;

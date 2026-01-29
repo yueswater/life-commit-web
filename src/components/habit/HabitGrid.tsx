@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { supabase } from '@/services/supabase';
 import {
   format,
@@ -19,7 +19,7 @@ const HabitGrid = ({ habitId }: HabitGridProps) => {
   const [commits, setCommits] = useState<any[]>([]);
 
   const totalDays = 365;
-  const today = startOfToday();
+  const today = useMemo(() => startOfToday(), []);
 
   const days = useMemo(() => {
     return Array.from({ length: totalDays }, (_, i) =>
@@ -55,7 +55,8 @@ const HabitGrid = ({ habitId }: HabitGridProps) => {
       });
   }, [days, monthLabels]);
 
-  const fetchCommits = async () => {
+  const fetchCommits = useCallback(async () => {
+    if (!habitId) return;
     const startDate = format(days[0], 'yyyy-MM-dd');
     const { data } = await supabase
       .from('habit_commits')
@@ -64,11 +65,11 @@ const HabitGrid = ({ habitId }: HabitGridProps) => {
       .gte('execution_date', startDate);
 
     if (data) setCommits(data);
-  };
+  }, [habitId, days]);
 
   useEffect(() => {
-    if (habitId) fetchCommits();
-  }, [habitId, days]);
+    fetchCommits();
+  }, [fetchCommits]);
 
   const getLevel = (date: Date) => {
     const log = commits.find((l) =>
@@ -79,11 +80,11 @@ const HabitGrid = ({ habitId }: HabitGridProps) => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center p-8 bg-white dark:bg-[#161b22]/40 rounded-[2.5rem] border border-gray-200 dark:border-gray-700 shadow-xl dark:shadow-2xl overflow-x-auto transition-all duration-300">
+    <div className="w-full flex flex-col items-center p-8 bg-base-100 rounded-[2.5rem] border border-base-300 shadow-xl transition-all duration-300 overflow-x-auto">
       {!habitId ? (
         <div className="py-20 flex flex-col items-center gap-4">
-          <div className="w-full max-w-2xl h-32 rounded-3xl border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center">
-            <span className="text-gray-400 dark:text-gray-500 font-black italic uppercase tracking-[0.2em] animate-pulse">
+          <div className="w-full max-w-2xl h-32 rounded-3xl border-2 border-dashed border-base-300 flex items-center justify-center">
+            <span className="text-base-content/40 font-black italic uppercase tracking-[0.2em] animate-pulse">
               {t('habit.selectToView')}
             </span>
           </div>
@@ -96,7 +97,7 @@ const HabitGrid = ({ habitId }: HabitGridProps) => {
               {months.map((m, i) => (
                 <div
                   key={i}
-                  className="absolute text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase whitespace-nowrap italic"
+                  className="absolute text-[10px] font-black text-base-content/50 uppercase whitespace-nowrap italic"
                   style={{
                     left: `${m.colIndex * 19.5}px`,
                     display: m.colIndex > 51 ? 'none' : 'block',
@@ -109,15 +110,18 @@ const HabitGrid = ({ habitId }: HabitGridProps) => {
           </div>
 
           <div className="flex gap-4">
-            <div className="grid grid-rows-7 gap-1.5 text-[10px] font-black text-gray-400 dark:text-gray-500 py-1 uppercase shrink-0 italic">
+            <div className="grid grid-rows-7 gap-1.5 text-[10px] font-black text-base-content/40 py-1 uppercase shrink-0 italic">
               {weekLabels.map((label, i) => (
-                <div key={i} className="h-3.5 flex items-center justify-end pr-1">
+                <div
+                  key={i}
+                  className="h-3.5 flex items-center justify-end pr-1"
+                >
                   {displayWeekdays.includes(i) ? label.charAt(0) : ''}
                 </div>
               ))}
             </div>
 
-            <div className="grid grid-flow-col grid-rows-7 gap-1.5 p-4 rounded-2xl bg-gray-50/50 dark:bg-black/20 border border-gray-100 dark:border-gray-800/50">
+            <div className="grid grid-flow-col grid-rows-7 gap-1.5 p-4 rounded-2xl bg-base-200/50 border border-base-300/50">
               {days.map((date, i) => {
                 const level = getLevel(date);
                 return (
@@ -125,14 +129,14 @@ const HabitGrid = ({ habitId }: HabitGridProps) => {
                     key={i}
                     className={`w-3.5 h-3.5 rounded-sm transition-all duration-500 ${
                       level === 0
-                        ? 'bg-gray-200/50 dark:bg-gray-800 border border-gray-300/50 dark:border-gray-700'
+                        ? 'bg-base-300/30 border border-base-300/50'
                         : level === 1
-                          ? 'bg-primary/20 shadow-[0_0_8px_rgba(var(--primary-rgb),0.2)]'
+                          ? 'bg-primary/20 shadow-[0_0_8px_rgba(var(--p),0.2)]'
                           : level === 2
-                            ? 'bg-primary/45 shadow-[0_0_10px_rgba(var(--primary-rgb),0.3)]'
+                            ? 'bg-primary/45 shadow-[0_0_10px_rgba(var(--p),0.3)]'
                             : level === 3
-                              ? 'bg-primary/70 shadow-[0_0_12px_rgba(var(--primary-rgb),0.4)]'
-                              : 'bg-primary shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)]'
+                              ? 'bg-primary/70 shadow-[0_0_12px_rgba(var(--p),0.4)]'
+                              : 'bg-primary shadow-[0_0_15px_rgba(var(--p),0.5)]'
                     }`}
                     title={`${format(date, 'yyyy-MM-dd')}`}
                   />
@@ -142,7 +146,7 @@ const HabitGrid = ({ habitId }: HabitGridProps) => {
           </div>
 
           <div className="w-full mt-6 flex justify-end items-center gap-3 shrink-0 px-2">
-            <span className="text-[10px] font-black text-gray-400 dark:text-gray-600 uppercase tracking-widest italic">
+            <span className="text-[10px] font-black text-base-content/40 uppercase tracking-widest italic">
               {t('common.less')}
             </span>
             <div className="flex gap-1.5">
@@ -151,19 +155,16 @@ const HabitGrid = ({ habitId }: HabitGridProps) => {
                   key={level}
                   className={`w-3.5 h-3.5 rounded-sm border ${
                     level === 0
-                      ? 'bg-gray-200/50 dark:bg-gray-800 border-gray-300/50 dark:border-gray-700'
-                      : level === 1
-                        ? 'bg-primary/20 border-transparent'
-                        : level === 2
-                          ? 'bg-primary/45 border-transparent'
-                          : level === 3
-                            ? 'bg-primary/70 border-transparent'
-                            : 'bg-primary border-transparent'
+                      ? 'bg-base-300/30 border-base-300/50'
+                      : 'bg-primary border-transparent'
                   }`}
+                  style={{
+                    opacity: level === 0 ? 1 : level * 0.25,
+                  }}
                 />
               ))}
             </div>
-            <span className="text-[10px] font-black text-gray-400 dark:text-gray-600 uppercase tracking-widest italic">
+            <span className="text-[10px] font-black text-base-content/40 uppercase tracking-widest italic">
               {t('common.more')}
             </span>
           </div>

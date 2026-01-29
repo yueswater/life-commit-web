@@ -81,7 +81,9 @@ const HabitListSection = ({
             <ChevronLeft size={14} />
           </button>
           <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 tracking-tighter uppercase italic">
-            {currentPage + 1} <span className="mx-1 text-gray-300 dark:text-gray-700">/</span> {totalPages}
+            {currentPage + 1}{' '}
+            <span className="mx-1 text-gray-300 dark:text-gray-700">/</span>{' '}
+            {totalPages}
           </span>
           <button
             disabled={currentPage === totalPages - 1}

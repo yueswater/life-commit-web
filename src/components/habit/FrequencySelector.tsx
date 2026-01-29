@@ -71,7 +71,8 @@ const FrequencySelector = ({
             className="range range-primary grow"
           />
           <span className="text-xl font-black text-primary w-20 text-center italic">
-            {weeklyCount}{t('habit.frequency.times')}
+            {weeklyCount}
+            {t('habit.frequency.times')}
           </span>
         </div>
       )}

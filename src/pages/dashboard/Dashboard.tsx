@@ -31,11 +31,14 @@ const Dashboard = () => {
     message: string;
   } | null>(null);
 
-  const showToast = (message: string, type: ToastType = 'success') => {
-    setToast({ message, type });
-  };
+  const showToast = useCallback(
+    (message: string, type: ToastType = 'success') => {
+      setToast({ message, type });
+    },
+    []
+  );
 
-  const fetchHabits = async () => {
+  const fetchHabits = useCallback(async () => {
     const { data } = await supabase
       .from('habits')
       .select('*')
@@ -47,11 +50,11 @@ const Dashboard = () => {
         setActiveHabitId(data[0].id);
       }
     }
-  };
+  }, [activeHabitId]);
 
   useEffect(() => {
     fetchHabits();
-  }, []);
+  }, [fetchHabits]);
 
   const handleCommit = useCallback(
     async (habitId: string) => {
@@ -81,11 +84,11 @@ const Dashboard = () => {
         }
         showToast(t('common.saveSuccess'));
         setRefreshGridKey((prev) => prev + 1);
-      } catch (error) {
+      } catch {
         showToast(t('common.error'), 'error');
       }
     },
-    [user, t]
+    [user, t, showToast]
   );
 
   const handleDeleteClick = (id: string) => {
@@ -123,7 +126,7 @@ const Dashboard = () => {
       <div className="w-full max-w-6xl flex flex-col gap-10">
         <div className="flex flex-col lg:flex-row gap-8 items-stretch w-full">
           <div className="w-full lg:w-[400px] shrink-0">
-            <UserStats habitCount={habits.length} />
+            <UserStats habitCount={habits.length} refreshKey={refreshGridKey} />
           </div>
 
           <div className="flex-grow flex flex-col gap-4 min-w-0">
@@ -155,7 +158,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="w-full pt-8 border-t border-gray-800/50 flex justify-center">
+        <div className="w-full pt-8 border-t border-base-300 flex justify-center">
           <div className="w-full">
             {activeHabitId ? (
               <div className="w-full animate-in fade-in slide-in-from-bottom-4 duration-700 flex justify-center">
@@ -165,8 +168,8 @@ const Dashboard = () => {
                 />
               </div>
             ) : (
-              <div className="w-full h-[300px] bg-base-200/20 rounded-[2.5rem] border-2 border-neutral-content/80 border-dashed flex items-center justify-center">
-                <span className="text-gray-600 font-black uppercase tracking-widest opacity-40">
+              <div className="w-full h-[300px] bg-base-200/20 rounded-[2.5rem] border-2 border-base-300 border-dashed flex items-center justify-center">
+                <span className="text-base-content/40 font-black uppercase tracking-widest">
                   {t('habit.selectPrompt')}
                 </span>
               </div>

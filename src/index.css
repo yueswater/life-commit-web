@@ -4,7 +4,7 @@
 @theme {
   --color-primary: #eeba2c;
   --color-primary-content: #161616;
-  --font-huninn: "Huninn", "sans-serif";
+  --font-huninn: 'Huninn', 'sans-serif';
 }
 
 :root,
