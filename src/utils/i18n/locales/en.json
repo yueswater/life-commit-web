@@ -31,18 +31,35 @@
     "confirmDelete": "Confirm Delete",
     "weekdays": ["S", "M", "T", "W", "T", "F", "S"],
     "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    "appName": "Life Commit",
     "less": "Less",
     "more": "More"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
     "createAccount": "Create Account",
-    "registerSuccess": "Register success! Please check Mailpit"
+    "registerSuccess": "Registration successful! Please check your email for the verification link.",
+    "placeholders": {
+      "account": "Enter username or email",
+      "password": "Enter password"
+    }
   },
   "sidebar": {
     "habits": "Habit Tracking",
     "settings": "Settings",
     "userMenu": "User Menu"
+  },
+  "home": {
+    "badge": "Start Your Streak Today",
+    "titlePart1": "Commit to",
+    "titlePart2": "Your Life",
+    "description": "Track habits, visualize progress, and build the best version of yourself through consistent daily commits.",
+    "getStarted": "Get Started",
+    "login": "Login"
+  },
+  "hero": {
+    "newTab": "New Tab",
+    "demoHabit": "Focus"
   },
   "habit": {
     "newHabit": "New Habit",

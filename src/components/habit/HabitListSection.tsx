@@ -44,8 +44,8 @@ const HabitListSection = ({
   }
 
   return (
-    <div className="flex flex-col h-full justify-between">
-      <div className="grid grid-cols-5 gap-3">
+    <div className="flex flex-col h-full justify-between select-none">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
         {displayTiles.map((habit) => (
           <HabitTile
             key={habit.id}
@@ -72,23 +72,23 @@ const HabitListSection = ({
       </div>
 
       {totalPages > 1 && (
-        <div className="flex justify-end items-center gap-4 mt-4">
+        <div className="flex justify-end items-center gap-4 mt-6">
           <button
             disabled={currentPage === 0}
             onClick={() => setCurrentPage((p) => p - 1)}
-            className="btn btn-xs btn-circle btn-ghost disabled:opacity-20"
+            className="btn btn-xs btn-circle bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 hover:bg-primary hover:text-white transition-all disabled:opacity-20"
           >
-            <ChevronLeft size={16} />
+            <ChevronLeft size={14} />
           </button>
-          <span className="text-[10px] font-black text-gray-500 tracking-tighter uppercase">
-            {currentPage + 1} / {totalPages}
+          <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 tracking-tighter uppercase italic">
+            {currentPage + 1} <span className="mx-1 text-gray-300 dark:text-gray-700">/</span> {totalPages}
           </span>
           <button
             disabled={currentPage === totalPages - 1}
             onClick={() => setCurrentPage((p) => p + 1)}
-            className="btn btn-xs btn-circle btn-ghost disabled:opacity-20"
+            className="btn btn-xs btn-circle bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 hover:bg-primary hover:text-white transition-all disabled:opacity-20"
           >
-            <ChevronRight size={16} />
+            <ChevronRight size={14} />
           </button>
         </div>
       )}

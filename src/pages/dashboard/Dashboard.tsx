@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '../services/supabase';
-import { useAuth } from '../contexts/AuthContext';
-import HabitGrid from '../components/HabitGrid';
-import UserStats from '../components/UserStats';
-import AddHabitModal from '../components/AddHabitModal';
-import HabitListSection from '../components/HabitListSection';
-import Toast, { type ToastType } from '../components/Toast';
-import ConfirmModal from '../components/ConfirmModal';
+import { supabase } from '@/services/supabase';
+import { useAuth } from '@/contexts/AuthContext';
+import HabitGrid from '@/components/habit/HabitGrid';
+import UserStats from '@/components/habit/UserStats';
+import AddHabitModal from '@/components/habit/AddHabitModal';
+import HabitListSection from '@/components/habit/HabitListSection';
+import Toast, { type ToastType } from '@/components/ui/Toast';
+import ConfirmModal from '@/components/ui/ConfirmModal';
 import { Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
@@ -128,7 +128,7 @@ const Dashboard = () => {
 
           <div className="flex-grow flex flex-col gap-4 min-w-0">
             <div className="flex justify-between items-center px-2">
-              <h2 className="text-xl font-black italic tracking-tighter text-primary uppercase">
+              <h2 className="text-xl font-black tracking-tighter text-primary uppercase">
                 {t('habit.myHabits')}
               </h2>
               <button
@@ -165,8 +165,8 @@ const Dashboard = () => {
                 />
               </div>
             ) : (
-              <div className="w-full h-[300px] bg-base-200/20 rounded-[2.5rem] border-2 border-gray-800 border-dashed flex items-center justify-center">
-                <span className="text-gray-600 font-black italic uppercase tracking-widest opacity-40">
+              <div className="w-full h-[300px] bg-base-200/20 rounded-[2.5rem] border-2 border-neutral-content/80 border-dashed flex items-center justify-center">
+                <span className="text-gray-600 font-black uppercase tracking-widest opacity-40">
                   {t('habit.selectPrompt')}
                 </span>
               </div>

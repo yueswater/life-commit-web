@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { supabase } from '../services/supabase';
-import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '@/services/supabase';
+import { useAuth } from '@/contexts/AuthContext';
 import { Mail, Shield, Camera, Loader2 } from 'lucide-react';
 
 const Settings = () => {

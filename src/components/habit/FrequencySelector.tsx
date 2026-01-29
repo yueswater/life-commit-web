@@ -37,11 +37,11 @@ const FrequencySelector = ({
   return (
     <div className="form-control md:col-span-2">
       <label className="label py-1">
-        <span className="label-text text-gray-400 font-bold uppercase text-xs">
+        <span className="label-text text-base-content/60 font-bold uppercase text-[10px] tracking-widest">
           {t('habit.frequency.title')}
         </span>
       </label>
-      <div className="flex flex-wrap gap-2 p-1 bg-base-300 rounded-full mb-4">
+      <div className="flex flex-wrap gap-2 p-1 bg-base-200 border border-base-300 rounded-full mb-4">
         {(['daily', 'weekly_count', 'weekly_days', 'custom'] as const).map(
           (type) => (
             <button
@@ -50,7 +50,7 @@ const FrequencySelector = ({
               className={`flex-1 min-w-[80px] py-2 rounded-full font-bold text-sm transition-all ${
                 freqType === type
                   ? 'bg-primary text-primary-content shadow-lg'
-                  : 'hover:bg-base-100 text-gray-400'
+                  : 'hover:bg-base-100 text-base-content/40'
               }`}
               onClick={() => setFreqType(type)}
             >
@@ -70,8 +70,8 @@ const FrequencySelector = ({
             onChange={(e) => setWeeklyCount(parseInt(e.target.value))}
             className="range range-primary grow"
           />
-          <span className="text-xl font-black text-primary w-16 text-center">
-            {weeklyCount}次
+          <span className="text-xl font-black text-primary w-20 text-center italic">
+            {weeklyCount}{t('habit.frequency.times')}
           </span>
         </div>
       )}
@@ -84,12 +84,12 @@ const FrequencySelector = ({
               type="button"
               className={`w-10 h-10 rounded-full font-bold transition-all border-2 ${
                 selectedDays.includes(i)
-                  ? 'bg-primary border-primary text-primary-content'
-                  : 'border-gray-700 text-gray-500 hover:border-gray-500'
+                  ? 'bg-primary border-primary text-primary-content shadow-md scale-105'
+                  : 'border-base-300 text-base-content/40 hover:border-primary/50'
               }`}
               onClick={() => toggleDay(i)}
             >
-              {label}
+              {label.charAt(0)}
             </button>
           ))}
         </div>
@@ -98,18 +98,18 @@ const FrequencySelector = ({
       {freqType === 'custom' && (
         <div className="flex items-center gap-x-3 gap-y-2 animate-in slide-in-from-top-2 h-12">
           <div className="flex items-center gap-2 shrink-0">
-            <span className="font-bold text-gray-400">
+            <span className="font-bold text-base-content/60 text-xs uppercase tracking-wider">
               {t('habit.frequency.every')}
             </span>
             <input
               type="number"
               min="1"
-              className="input input-bordered w-14 bg-base-200 border-gray-700 font-bold h-10 rounded-full px-1 text-center"
+              className="input input-bordered w-16 bg-base-200 border-base-300 text-base-content font-bold h-10 rounded-full px-1 text-center focus:border-primary"
               value={customValue}
               onChange={(e) => setCustomValue(parseInt(e.target.value) || 1)}
             />
             <select
-              className="select select-bordered bg-base-200 border-gray-700 font-bold h-10 rounded-full min-h-0 w-24 px-3"
+              className="select select-bordered bg-base-200 border-base-300 text-base-content font-bold h-10 rounded-full min-h-0 w-24 px-3 focus:border-primary"
               value={customUnit}
               onChange={(e) => setCustomUnit(e.target.value as any)}
             >
@@ -121,17 +121,17 @@ const FrequencySelector = ({
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
-            <span className="font-bold text-gray-400">
+            <span className="font-bold text-base-content/60 text-xs uppercase tracking-wider">
               {t('habit.frequency.execute')}
             </span>
             <input
               type="number"
               min="1"
-              className="input input-bordered w-14 bg-base-200 border-gray-700 font-bold h-10 rounded-full px-1 text-center"
+              className="input input-bordered w-16 bg-base-200 border-base-300 text-base-content font-bold h-10 rounded-full px-1 text-center focus:border-primary"
               value={customCount}
               onChange={(e) => setCustomCount(parseInt(e.target.value) || 1)}
             />
-            <span className="font-bold text-gray-400">
+            <span className="font-bold text-base-content/60 text-xs uppercase tracking-wider">
               {t('habit.frequency.times')}
             </span>
           </div>

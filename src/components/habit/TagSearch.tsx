@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { supabase } from '../services/supabase';
+import { supabase } from '@/services/supabase';
 import { Tag, Search, Plus, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -87,18 +87,18 @@ const TagSearch = ({ selectedTagId, onSelect }: TagSearchProps) => {
   return (
     <div className="form-control relative w-full" ref={dropdownRef}>
       <label className="label py-1 px-0">
-        <span className="label-text text-gray-400 font-bold uppercase text-xs">
+        <span className="label-text text-base-content/60 font-bold uppercase text-[10px] tracking-widest">
           {t('habit.tag')}
         </span>
       </label>
-      <div className="flex items-center gap-3 bg-base-200 border border-gray-700 h-14 rounded-2xl px-4 focus-within:border-primary transition-all w-full">
+      <div className="flex items-center gap-3 bg-base-200 border border-base-300 h-14 rounded-2xl px-4 focus-within:border-primary transition-all w-full">
         <Tag
           size={18}
-          className={selectedTagId ? 'text-primary' : 'text-gray-500'}
+          className={selectedTagId ? 'text-primary' : 'text-base-content/40'}
         />
         <input
           type="text"
-          className="grow font-bold bg-transparent outline-none w-full"
+          className="grow font-bold bg-transparent outline-none w-full text-base-content placeholder:text-base-content/20"
           placeholder={t('habit.searchOrAddTag')}
           value={query}
           onFocus={() => setShowDropdown(true)}
@@ -108,32 +108,32 @@ const TagSearch = ({ selectedTagId, onSelect }: TagSearchProps) => {
           }}
         />
         {loading ? (
-          <Loader2 size={16} className="animate-spin text-gray-500" />
+          <Loader2 size={16} className="animate-spin text-primary" />
         ) : (
-          <Search size={16} className="text-gray-500" />
+          <Search size={16} className="text-base-content/40" />
         )}
       </div>
 
       {showDropdown && (
-        <div className="absolute top-[88px] left-0 w-full bg-base-300 border border-gray-700 rounded-2xl shadow-2xl z-[60] overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-          <div className="p-2 flex flex-col gap-1 max-h-60 overflow-y-auto">
+        <div className="absolute top-[88px] left-0 w-full bg-base-100 border border-base-300 rounded-2xl shadow-2xl z-[60] overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+          <div className="p-2 flex flex-col gap-1 max-h-60 overflow-y-auto custom-scrollbar">
             {results.length > 0
               ? results.map((tag) => (
                   <button
                     key={tag.id}
                     type="button"
-                    className="flex items-center gap-2 px-4 py-3 hover:bg-primary hover:text-primary-content rounded-xl font-bold transition-colors text-left w-full"
+                    className="flex items-center gap-2 px-4 py-3 hover:bg-primary hover:text-primary-content rounded-xl font-bold transition-colors text-left w-full text-base-content"
                     onClick={() => {
                       onSelect(tag.id, tag.name);
                       setQuery(tag.name);
                       setShowDropdown(false);
                     }}
                   >
-                    <Tag size={14} /> {tag.name}
+                    <Tag size={14} className="opacity-40" /> {tag.name}
                   </button>
                 ))
               : query && (
-                  <div className="p-4 text-center text-gray-500 text-sm">
+                  <div className="p-4 text-center text-base-content/40 text-sm">
                     {t('habit.noMatchingTags')}
                   </div>
                 )}

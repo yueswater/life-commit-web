@@ -1,10 +1,11 @@
+import { useAuth } from '@/contexts/AuthContext';
+import Login from '@/pages/auth/Login';
+import Register from '@/pages/auth/Register';
+import Dashboard from '@/pages/dashboard/Dashboard';
+import Home from '@/pages/home/Home';
+import Settings from '@/pages/settings/Settings';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import Home from '../pages/Home';
-import Login from '../pages/Login';
-import Register from '../pages/Register';
-import Dashboard from '../pages/Dashboard';
-import Settings from '../pages/Settings';
+
 
 const AppRouter = () => {
   const { user } = useAuth();

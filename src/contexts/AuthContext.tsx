@@ -6,8 +6,8 @@ import {
   type ReactNode,
 } from 'react';
 import type { User } from '@supabase/supabase-js';
-import { supabase } from '../services/supabase';
-import type { Tables } from '../types/supabase';
+import { supabase } from '@/services/supabase';
+import type { Tables } from '@/types/supabase';
 
 interface AuthContextType {
   user: User | null;

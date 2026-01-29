@@ -8,7 +8,7 @@ import {
   LayoutDashboard,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface UserSidebarProps {
   isOpen: boolean;
@@ -115,7 +115,7 @@ const SidebarItem = ({
   <Link
     to={to}
     onClick={onClick}
-    className="flex items-center gap-4 p-4 rounded-2xl hover:bg-base-200 transition-all font-bold text-gray-400 hover:text-white group"
+    className="flex items-center gap-4 p-4 rounded-2xl hover:bg-base-200 transition-all font-bold text-gray-400 hover:text-primary group"
   >
     <div className="text-gray-500 group-hover:text-primary transition-colors">
       {icon}

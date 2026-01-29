@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../services/supabase';
-import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '@/services/supabase';
+import { useAuth } from '@/contexts/AuthContext';
 import { X, Type, FileText, Loader2, Calendar, Hash } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import FrequencySelector from './FrequencySelector';
@@ -134,21 +134,21 @@ const AddHabitModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="modal modal-open text-white">
-      <div className="modal-box max-w-5xl bg-[#1d232a] border border-gray-800 p-0 overflow-visible rounded-3xl shadow-2xl">
+    <div className="modal modal-open">
+      <div className="modal-box max-w-5xl bg-base-100 border border-base-300 p-0 overflow-visible rounded-3xl shadow-2xl transition-all duration-300">
         <div className="flex flex-col md:flex-row min-h-[600px]">
-          <div className="md:w-1/4 bg-primary p-8 flex flex-col justify-center items-center text-primary-content">
+          <div className="md:w-1/4 bg-primary p-8 flex flex-col justify-center items-center text-primary-content rounded-t-3xl md:rounded-tr-none md:rounded-l-3xl">
             <Calendar size={64} className="mb-4 opacity-90" />
-            <h3 className="text-2xl font-black italic tracking-tighter text-center uppercase leading-none">
+            <h3 className="text-2xl font-black tracking-tighter text-center uppercase leading-none font-huninn">
               {editData ? t('common.edit') : t('habit.newHabit')}
             </h3>
           </div>
 
-          <div className="md:w-3/4 p-10 relative bg-base-100 text-left text-gray-100">
+          <div className="md:w-3/4 p-10 relative bg-base-100 text-left text-base-content rounded-b-3xl md:rounded-bl-none md:rounded-r-3xl">
             <button
               type="button"
               onClick={onClose}
-              className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 text-gray-500 hover:text-white transition-colors"
+              className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 text-base-content/40 hover:text-base-content transition-colors"
             >
               <X size={24} />
             </button>
@@ -157,15 +157,15 @@ const AddHabitModal = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                 <div className="form-control w-full">
                   <label className="label py-1">
-                    <span className="label-text text-gray-400 font-bold uppercase text-xs">
+                    <span className="label-text text-base-content/60 font-bold uppercase text-[10px] tracking-widest">
                       {t('habit.name')}
                     </span>
                   </label>
-                  <label className="input input-bordered flex items-center gap-3 bg-base-200 border-gray-700 h-14 rounded-2xl focus-within:border-primary w-full transition-all">
-                    <Type size={18} className="text-gray-500" />
+                  <label className="input input-bordered flex items-center gap-3 bg-base-200 border-base-300 h-14 rounded-2xl focus-within:border-primary w-full transition-all">
+                    <Type size={18} className="text-base-content/40" />
                     <input
                       type="text"
-                      className="grow font-bold bg-transparent border-none outline-none focus:ring-0"
+                      className="grow font-bold bg-transparent border-none outline-none focus:ring-0 text-base-content"
                       placeholder={t('habit.namePlaceholder')}
                       value={name}
                       onChange={(e) => setName(e.target.value)}
@@ -194,15 +194,15 @@ const AddHabitModal = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                 <div className="form-control">
                   <label className="label py-1">
-                    <span className="label-text text-gray-400 font-bold uppercase text-xs">
+                    <span className="label-text text-base-content/60 font-bold uppercase text-[10px] tracking-widest">
                       {t('habit.dailyGoal')}
                     </span>
                   </label>
-                  <label className="input input-bordered flex items-center gap-3 bg-base-200 border-gray-700 h-14 rounded-2xl focus-within:border-primary w-full transition-all">
-                    <Hash size={18} className="text-gray-500" />
+                  <label className="input input-bordered flex items-center gap-3 bg-base-200 border-base-300 h-14 rounded-2xl focus-within:border-primary w-full transition-all">
+                    <Hash size={18} className="text-base-content/40" />
                     <input
                       type="number"
-                      className="grow font-bold bg-transparent border-none outline-none focus:ring-0"
+                      className="grow font-bold bg-transparent border-none outline-none focus:ring-0 text-base-content"
                       min="1"
                       value={goalCount}
                       onChange={(e) => setGoalCount(parseInt(e.target.value))}
@@ -218,15 +218,15 @@ const AddHabitModal = ({
 
               <div className="form-control w-full">
                 <label className="label py-1">
-                  <span className="label-text text-gray-400 font-bold uppercase text-xs">
+                  <span className="label-text text-base-content/60 font-bold uppercase text-[10px] tracking-widest">
                     {t('habit.memo')}
                   </span>
                 </label>
-                <label className="input input-bordered flex items-center gap-3 bg-base-200 border-gray-700 h-14 rounded-2xl focus-within:border-primary w-full transition-all">
-                  <FileText size={18} className="text-gray-500" />
+                <label className="input input-bordered flex items-center gap-3 bg-base-200 border-base-300 h-14 rounded-2xl focus-within:border-primary w-full transition-all">
+                  <FileText size={18} className="text-base-content/40" />
                   <input
                     type="text"
-                    className="grow font-medium bg-transparent border-none outline-none focus:ring-0"
+                    className="grow font-medium bg-transparent border-none outline-none focus:ring-0 text-base-content"
                     placeholder={t('habit.memoPlaceholder')}
                     value={memo}
                     onChange={(e) => setMemo(e.target.value)}
@@ -236,7 +236,7 @@ const AddHabitModal = ({
 
               <div className="mt-4">
                 <button
-                  className="btn btn-primary w-full h-14 rounded-2xl font-black text-lg shadow-xl shadow-primary/20 transition-all hover:scale-[1.01] active:scale-[0.98]"
+                  className="btn btn-primary w-full h-14 rounded-2xl font-black text-lg shadow-xl shadow-primary/20 transition-all hover:scale-[1.01] active:scale-[0.98] font-huninn uppercase tracking-tighter"
                   type="submit"
                   disabled={loading}
                 >

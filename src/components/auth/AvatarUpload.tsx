@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { supabase } from '../services/supabase';
-import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '@/services/supabase';
+import { useAuth } from '@/contexts/AuthContext';
 import { Camera, Loader2 } from 'lucide-react';
 
 const AvatarUpload = () => {

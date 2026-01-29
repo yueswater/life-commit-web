@@ -2,7 +2,7 @@ import { useState } from 'react';
 import * as Icons from 'lucide-react';
 import { Search, X, Target } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { ICON_MAPPING } from '../data/icons';
+import { ICON_MAPPING } from '@/data/icons';
 
 interface IconPickerProps {
   selectedIcon: string;
@@ -13,6 +13,7 @@ const IconPicker = ({ selectedIcon, onSelect }: IconPickerProps) => {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [showPicker, setShowPicker] = useState(false);
+
   const filteredIcons = ICON_MAPPING.filter((item) => {
     const translatedName = t(`icons.${item.label}`);
     const searchLower = searchTerm.toLowerCase();
@@ -33,7 +34,7 @@ const IconPicker = ({ selectedIcon, onSelect }: IconPickerProps) => {
   return (
     <div className="form-control w-full relative">
       <label className="label py-1 px-0">
-        <span className="label-text text-gray-400 font-bold uppercase text-xs">
+        <span className="label-text text-base-content/60 font-bold uppercase text-[10px] tracking-widest">
           {t('habit.icon')}
         </span>
       </label>
@@ -41,21 +42,21 @@ const IconPicker = ({ selectedIcon, onSelect }: IconPickerProps) => {
       <button
         type="button"
         onClick={() => setShowPicker(!showPicker)}
-        className="flex items-center gap-4 bg-base-200 border border-gray-700 h-14 rounded-2xl px-4 hover:border-primary transition-all w-full overflow-hidden group"
+        className="flex items-center gap-4 bg-base-200 border border-base-300 h-14 rounded-2xl px-4 hover:border-primary transition-all w-full overflow-hidden group"
       >
         <div className="p-2 bg-primary/10 rounded-xl text-primary shrink-0 group-hover:bg-primary/20 transition-colors">
           <SelectedIconComponent size={24} />
         </div>
-        <span className="font-bold text-gray-200 truncate">{displayLabel}</span>
+        <span className="font-bold text-base-content truncate">{displayLabel}</span>
       </button>
 
       {showPicker && (
-        <div className="absolute top-[88px] left-0 w-full bg-base-300 border border-gray-700 rounded-3xl shadow-2xl z-[70] p-4 animate-in fade-in zoom-in-95 duration-200">
-          <div className="flex items-center gap-2 bg-base-100 border border-gray-800 rounded-xl px-3 mb-4 focus-within:border-primary transition-all">
-            <Search size={16} className="text-gray-500" />
+        <div className="absolute top-[88px] left-0 w-full bg-base-100 border border-base-300 rounded-3xl shadow-2xl z-[70] p-4 animate-in fade-in zoom-in-95 duration-200">
+          <div className="flex items-center gap-2 bg-base-200 border border-base-300 rounded-xl px-3 mb-4 focus-within:border-primary transition-all">
+            <Search size={16} className="text-base-content/40" />
             <input
               type="text"
-              className="bg-transparent w-full py-2 text-sm font-bold outline-none text-white"
+              className="bg-transparent w-full py-2 text-sm font-bold outline-none text-base-content placeholder:text-base-content/20"
               placeholder={t('common.search')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -64,7 +65,7 @@ const IconPicker = ({ selectedIcon, onSelect }: IconPickerProps) => {
             {searchTerm && (
               <X
                 size={16}
-                className="cursor-pointer hover:text-white"
+                className="cursor-pointer text-base-content/40 hover:text-base-content transition-colors"
                 onClick={() => setSearchTerm('')}
               />
             )}
@@ -86,8 +87,8 @@ const IconPicker = ({ selectedIcon, onSelect }: IconPickerProps) => {
                   }}
                   className={`flex items-center justify-center p-3 rounded-xl transition-all ${
                     isSelected
-                      ? 'bg-primary text-primary-content shadow-lg shadow-primary/20'
-                      : 'hover:bg-base-200 text-gray-400 hover:text-white'
+                      ? 'bg-primary text-primary-content shadow-lg shadow-primary/20 scale-105'
+                      : 'hover:bg-base-200 text-base-content/40 hover:text-base-content'
                   }`}
                 >
                   <IconComp size={22} />
@@ -95,7 +96,7 @@ const IconPicker = ({ selectedIcon, onSelect }: IconPickerProps) => {
               );
             })}
             {filteredIcons.length === 0 && (
-              <div className="col-span-5 py-6 text-center text-gray-500 text-xs font-bold uppercase tracking-widest">
+              <div className="col-span-5 py-6 text-center text-base-content/40 text-[10px] font-bold uppercase tracking-widest">
                 {t('common.noResults')}
               </div>
             )}

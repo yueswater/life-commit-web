@@ -1,8 +1,8 @@
 import { BrowserRouter } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
 import AppRouter from './routers';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import Navbar from './components/layout/Navbar';
+import Footer from './components/ui/Footer';
 
 function App() {
   const { loading } = useAuth();
