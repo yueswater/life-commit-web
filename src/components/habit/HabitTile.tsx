@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import * as Icons from 'lucide-react';
 import { Pencil, Trash2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -32,7 +32,7 @@ const HabitTile = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const DURATION = 1500;
 
-  const handleStart = (e: React.MouseEvent | React.TouchEvent) => {
+  const handleStart = () => {
     if (isPlaceholder || isActive) return;
     setIsPressing(true);
     startTimeRef.current = Date.now();
