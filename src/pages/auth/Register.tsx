@@ -33,102 +33,106 @@ const Register = () => {
   };
 
   const inputStyle =
-    'input input-bordered w-full bg-base-200 border-base-300 text-base-content rounded-2xl h-14 focus:border-primary transition-all';
+    'input input-bordered w-full bg-base-200 border-base-300 text-base-content rounded-2xl h-14 focus:border-primary transition-all text-base';
 
   return (
-    <Card title={t('auth.createAccount')}>
-      <form className="w-full flex flex-col gap-5" onSubmit={handleRegister}>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="form-control text-left">
-            <label className="label py-1">
-              <span className="label-text text-base-content/60 font-bold uppercase tracking-widest text-[10px]">
-                {t('common.firstName')}
-              </span>
-            </label>
-            <input type="text" className={inputStyle} required />
-          </div>
-          <div className="form-control text-left">
-            <label className="label py-1">
-              <span className="label-text text-base-content/60 font-bold uppercase tracking-widest text-[10px]">
-                {t('common.lastName')}
-              </span>
-            </label>
-            <input type="text" className={inputStyle} required />
-          </div>
-        </div>
+    <div className="min-h-[calc(100vh-80px)] flex items-center justify-center p-4 sm:p-6 bg-base-100">
+      <div className="w-full max-w-[480px] animate-in fade-in zoom-in duration-500">
+        <Card title={t('auth.createAccount')}>
+          <form className="w-full flex flex-col gap-4 sm:gap-5" onSubmit={handleRegister}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="form-control text-left">
+                <label className="label py-1">
+                  <span className="label-text text-base-content/60 font-bold uppercase tracking-widest text-[10px]">
+                    {t('common.firstName')}
+                  </span>
+                </label>
+                <input type="text" className={inputStyle} required />
+              </div>
+              <div className="form-control text-left">
+                <label className="label py-1">
+                  <span className="label-text text-base-content/60 font-bold uppercase tracking-widest text-[10px]">
+                    {t('common.lastName')}
+                  </span>
+                </label>
+                <input type="text" className={inputStyle} required />
+              </div>
+            </div>
 
-        <div className="form-control w-full text-left">
-          <label className="label py-1">
-            <span className="label-text text-base-content/60 font-bold uppercase tracking-widest text-[10px]">
-              {t('common.username')}
-            </span>
-          </label>
-          <input
-            type="text"
-            className={inputStyle}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
+            <div className="form-control w-full text-left">
+              <label className="label py-1">
+                <span className="label-text text-base-content/60 font-bold uppercase tracking-widest text-[10px]">
+                  {t('common.username')}
+                </span>
+              </label>
+              <input
+                type="text"
+                className={inputStyle}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
 
-        <div className="form-control w-full text-left">
-          <label className="label py-1">
-            <span className="label-text text-base-content/60 font-bold uppercase tracking-widest text-[10px]">
-              {t('common.email')}
-            </span>
-          </label>
-          <input
-            type="email"
-            className={inputStyle}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
+            <div className="form-control w-full text-left">
+              <label className="label py-1">
+                <span className="label-text text-base-content/60 font-bold uppercase tracking-widest text-[10px]">
+                  {t('common.email')}
+                </span>
+              </label>
+              <input
+                type="email"
+                className={inputStyle}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
 
-        <div className="form-control w-full text-left">
-          <label className="label py-1">
-            <span className="label-text text-base-content/60 font-bold uppercase tracking-widest text-[10px]">
-              {t('common.password')}
-            </span>
-          </label>
-          <div className="relative">
-            <input
-              type={showPassword ? 'text' : 'password'}
-              className={inputStyle}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="form-control w-full text-left">
+              <label className="label py-1">
+                <span className="label-text text-base-content/60 font-bold uppercase tracking-widest text-[10px]">
+                  {t('common.password')}
+                </span>
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  className={inputStyle}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-base-content/40 hover:text-primary transition-colors p-1"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+            </div>
+
             <button
-              type="button"
-              className="absolute right-4 top-4 text-base-content/40 hover:text-primary transition-colors"
-              onClick={() => setShowPassword(!showPassword)}
+              className={`btn btn-primary w-full rounded-2xl h-14 font-black uppercase tracking-tighter text-lg shadow-lg shadow-primary/20 mt-4 font-huninn ${loading ? 'loading' : ''}`}
+              type="submit"
+              disabled={loading}
             >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              {t('common.register')}
             </button>
-          </div>
-        </div>
 
-        <button
-          className={`btn btn-primary w-full rounded-2xl h-14 font-black uppercase tracking-tighter mt-4 font-huninn ${loading ? 'loading' : ''}`}
-          type="submit"
-          disabled={loading}
-        >
-          {t('common.register')}
-        </button>
-
-        <div className="text-center mt-2">
-          <span className="text-base-content/60 font-medium">
-            {t('common.hasAccount')}{' '}
-          </span>
-          <Link
-            to="/login"
-            className="text-primary hover:underline font-black uppercase tracking-tighter"
-          >
-            {t('common.login')}
-          </Link>
-        </div>
-      </form>
-    </Card>
+            <div className="text-center text-sm sm:text-base mt-2 mb-1">
+              <span className="text-base-content/60 font-medium">
+                {t('common.hasAccount')}{' '}
+              </span>
+              <Link
+                to="/login"
+                className="text-primary hover:underline font-black uppercase tracking-tighter"
+              >
+                {t('common.login')}
+              </Link>
+            </div>
+          </form>
+        </Card>
+      </div>
+    </div>
   );
 };
 

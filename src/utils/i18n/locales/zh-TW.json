@@ -23,6 +23,7 @@
     "edit": "編輯",
     "cancel": "取消",
     "confirm": "確認",
+    "habit": "習慣",
     "error": "發生錯誤，請稍後再試",
     "saveSuccess": "打卡成功",
     "createSuccess": "建立成功",
@@ -34,6 +35,10 @@
     "appName": "Life Commit",
     "less": "較少",
     "more": "較多"
+  },
+  "theme": {
+    "light": "淺色主題",
+    "dark": "深色主題"
   },
   "auth": {
     "welcomeBack": "歡迎回來",
@@ -78,6 +83,7 @@
     "frequency": {
       "title": "執行頻率",
       "daily": "每日",
+      "dailyDesc": "每天都執行！",
       "weekly_count": "每週次數",
       "weekly_days": "特定日子",
       "custom": "自定義",

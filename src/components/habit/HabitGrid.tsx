@@ -7,25 +7,41 @@ import {
   startOfToday,
   eachMonthOfInterval,
   isSameMonth,
+  startOfWeek,
+  startOfMonth,
 } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 
 interface HabitGridProps {
-  habitId: string;
+  habitId: string | null;
 }
 
 const HabitGrid = ({ habitId }: HabitGridProps) => {
   const { t } = useTranslation();
   const [commits, setCommits] = useState<any[]>([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  const totalDays = 365;
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const today = useMemo(() => startOfToday(), []);
 
   const days = useMemo(() => {
-    return Array.from({ length: totalDays }, (_, i) =>
-      subDays(today, totalDays - 1 - i)
-    );
-  }, [today]);
+    const dayCount = isMobile ? 90 : 365;
+    const startDate = startOfWeek(subDays(today, dayCount), { weekStartsOn: 0 });
+    const totalDaysNeeded = Math.ceil((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+    const remainingDaysInWeek = (7 - (totalDaysNeeded % 7)) % 7;
+    const totalGridDays = totalDaysNeeded + remainingDaysInWeek;
+
+    return Array.from({ length: totalGridDays }, (_, i) => {
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + i);
+      return date;
+    });
+  }, [today, isMobile]);
 
   const weekLabels = t('common.weekdays', { returnObjects: true }) as string[];
   const monthLabels = t('common.months', { returnObjects: true }) as string[];
@@ -37,34 +53,38 @@ const HabitGrid = ({ habitId }: HabitGridProps) => {
       end: days[days.length - 1],
     });
 
-    return interval
-      .map((monthDate) => {
-        const firstDayOfMonthIndex = days.findIndex((d) =>
-          isSameMonth(d, monthDate)
-        );
-        const colIndex = Math.floor(firstDayOfMonthIndex / 7);
+    return interval.map((monthDate) => {
+      const firstDayDate = startOfMonth(monthDate);
+      const firstDayIndex = days.findIndex((d) => isSameDay(d, firstDayDate));
+      const actualIndex = firstDayIndex === -1 
+        ? days.findIndex(d => isSameMonth(d, monthDate))
+        : firstDayIndex;
 
-        return {
-          label: monthLabels[monthDate.getMonth()],
-          colIndex: colIndex,
-        };
-      })
-      .filter((m, i, arr) => {
-        if (i === 0) return true;
-        return m.colIndex !== arr[i - 1].colIndex;
-      });
+      return {
+        label: monthLabels[monthDate.getMonth()],
+        colIndex: Math.floor(actualIndex / 7),
+      };
+    }).filter(m => m.colIndex >= 0);
   }, [days, monthLabels]);
 
   const fetchCommits = useCallback(async () => {
-    if (!habitId) return;
     const startDate = format(days[0], 'yyyy-MM-dd');
-    const { data } = await supabase
+    let query = supabase
       .from('habit_commits')
       .select('execution_date, count')
-      .eq('habit_id', habitId)
       .gte('execution_date', startDate);
 
-    if (data) setCommits(data);
+    if (habitId) query = query.eq('habit_id', habitId);
+
+    const { data } = await query;
+
+    if (data) {
+      const aggregated = data.reduce((acc: any, curr: any) => {
+        acc[curr.execution_date] = (acc[curr.execution_date] || 0) + curr.count;
+        return acc;
+      }, {});
+      setCommits(Object.keys(aggregated).map(date => ({ execution_date: date, count: aggregated[date] })));
+    }
   }, [habitId, days]);
 
   useEffect(() => {
@@ -72,36 +92,29 @@ const HabitGrid = ({ habitId }: HabitGridProps) => {
   }, [fetchCommits]);
 
   const getLevel = (date: Date) => {
-    const log = commits.find((l) =>
-      isSameDay(new Date(l.execution_date), date)
-    );
+    if (date > today) return -1;
+    const dateStr = format(date, 'yyyy-MM-dd');
+    const log = commits.find((l) => l.execution_date === dateStr);
     if (!log) return 0;
     return Math.min(log.count || 1, 4);
   };
 
+  const CELL_SIZE = isMobile ? 12 : 14;
+  const GAP = 4;
+  const COL_WIDTH = CELL_SIZE + GAP;
+
   return (
-    <div className="w-full flex flex-col items-center p-8 bg-base-100 rounded-[2.5rem] border border-base-300 shadow-xl transition-all duration-300 overflow-x-auto">
-      {!habitId ? (
-        <div className="py-20 flex flex-col items-center gap-4">
-          <div className="w-full max-w-2xl h-32 rounded-3xl border-2 border-dashed border-base-300 flex items-center justify-center">
-            <span className="text-base-content/40 font-black italic uppercase tracking-[0.2em] animate-pulse">
-              {t('habit.selectToView')}
-            </span>
-          </div>
-        </div>
-      ) : (
-        <div className="flex flex-col gap-2 min-w-max">
-          <div className="flex gap-4">
+    <div className="w-full flex flex-col items-center p-4 md:p-8 bg-base-100 rounded-3xl md:rounded-[2.5rem] border border-base-300 shadow-xl overflow-hidden">
+      <div className="w-full overflow-x-auto no-scrollbar pb-2 flex justify-center">
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-2">
             <div className="w-6 shrink-0" />
             <div className="relative h-5 w-full">
               {months.map((m, i) => (
                 <div
                   key={i}
-                  className="absolute text-[10px] font-black text-base-content/50 uppercase whitespace-nowrap italic"
-                  style={{
-                    left: `${m.colIndex * 19.5}px`,
-                    display: m.colIndex > 51 ? 'none' : 'block',
-                  }}
+                  className="absolute text-[10px] font-black text-base-content/50 uppercase italic whitespace-nowrap"
+                  style={{ left: `${m.colIndex * COL_WIDTH}px` }}
                 >
                   {m.label}
                 </div>
@@ -109,67 +122,67 @@ const HabitGrid = ({ habitId }: HabitGridProps) => {
             </div>
           </div>
 
-          <div className="flex gap-4">
-            <div className="grid grid-rows-7 gap-1.5 text-[10px] font-black text-base-content/40 py-1 uppercase shrink-0 italic">
+          <div className="flex gap-2">
+            <div className="grid grid-rows-7 gap-[4px] text-[10px] font-black text-base-content/40 py-1 uppercase shrink-0 italic">
               {weekLabels.map((label, i) => (
-                <div
-                  key={i}
-                  className="h-3.5 flex items-center justify-end pr-1"
-                >
+                <div key={i} className="h-[14px] flex items-center justify-end pr-1">
                   {displayWeekdays.includes(i) ? label.charAt(0) : ''}
                 </div>
               ))}
             </div>
 
-            <div className="grid grid-flow-col grid-rows-7 gap-1.5 p-4 rounded-2xl bg-base-200/50 border border-base-300/50">
+            <div 
+              className="grid grid-flow-col grid-rows-7 gap-[4px] p-4 rounded-2xl bg-base-200/50 border border-base-300/50"
+              style={{ 
+                gridTemplateColumns: `repeat(${Math.ceil(days.length / 7)}, ${CELL_SIZE}px)`,
+                gridTemplateRows: `repeat(7, ${CELL_SIZE}px)`
+              }}
+            >
               {days.map((date, i) => {
                 const level = getLevel(date);
                 return (
                   <div
                     key={i}
-                    className={`w-3.5 h-3.5 rounded-sm transition-all duration-500 ${
-                      level === 0
-                        ? 'bg-base-300/30 border border-base-300/50'
-                        : level === 1
-                          ? 'bg-primary/20 shadow-[0_0_8px_rgba(var(--p),0.2)]'
-                          : level === 2
-                            ? 'bg-primary/45 shadow-[0_0_10px_rgba(var(--p),0.3)]'
-                            : level === 3
-                              ? 'bg-primary/70 shadow-[0_0_12px_rgba(var(--p),0.4)]'
-                              : 'bg-primary shadow-[0_0_15px_rgba(var(--p),0.5)]'
+                    className={`rounded-[2px] transition-all duration-500 ${
+                      level === -1
+                        ? 'bg-transparent'
+                        : level === 0
+                          ? 'bg-base-300/30 border border-base-300/10'
+                          : level === 1
+                            ? 'bg-primary/20'
+                            : level === 2
+                              ? 'bg-primary/40'
+                              : level === 3
+                                ? 'bg-primary/70'
+                                : 'bg-primary shadow-[0_0_8px_rgba(var(--p),0.4)]'
                     }`}
-                    title={`${format(date, 'yyyy-MM-dd')}`}
+                    style={{ width: CELL_SIZE, height: CELL_SIZE }}
+                    title={format(date, 'yyyy-MM-dd')}
                   />
                 );
               })}
             </div>
           </div>
 
-          <div className="w-full mt-6 flex justify-end items-center gap-3 shrink-0 px-2">
-            <span className="text-[10px] font-black text-base-content/40 uppercase tracking-widest italic">
-              {t('common.less')}
-            </span>
-            <div className="flex gap-1.5">
-              {[0, 1, 2, 3, 4].map((level) => (
+          <div className="w-full mt-4 flex justify-end items-center gap-3 px-1">
+            <span className="text-[10px] font-black text-base-content/40 uppercase italic">{t('common.less')}</span>
+            <div className="flex gap-1">
+              {[0, 1, 2, 3, 4].map((l) => (
                 <div
-                  key={level}
-                  className={`w-3.5 h-3.5 rounded-sm border ${
-                    level === 0
-                      ? 'bg-base-300/30 border-base-300/50'
-                      : 'bg-primary border-transparent'
-                  }`}
-                  style={{
-                    opacity: level === 0 ? 1 : level * 0.25,
+                  key={l}
+                  className={`rounded-[2px] ${l === 0 ? 'bg-base-300/30 border border-base-300/10' : 'bg-primary'}`}
+                  style={{ 
+                    width: CELL_SIZE, 
+                    height: CELL_SIZE, 
+                    opacity: l === 0 ? 1 : (l * 0.25)
                   }}
                 />
               ))}
             </div>
-            <span className="text-[10px] font-black text-base-content/40 uppercase tracking-widest italic">
-              {t('common.more')}
-            </span>
+            <span className="text-[10px] font-black text-base-content/40 uppercase italic">{t('common.more')}</span>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

@@ -11,7 +11,7 @@ interface Habit {
 interface HabitListSectionProps {
   habits: Habit[];
   activeHabitId: string | null;
-  onSelectHabit: (id: string) => void;
+  onSelectHabit: (id: string | null) => void;
   onCommitHabit: (id: string) => void;
   onEditHabit: (habit: Habit) => void;
   onDeleteHabit: (id: string) => void;
@@ -44,8 +44,8 @@ const HabitListSection = ({
   }
 
   return (
-    <div className="flex flex-col h-full justify-between select-none">
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+    <div className="flex flex-col h-full justify-between select-none w-full !overflow-visible">
+      <div className="grid grid-cols-5 grid-rows-2 gap-3 md:gap-8 !overflow-visible p-4">
         {displayTiles.map((habit) => (
           <HabitTile
             key={habit.id}
@@ -53,9 +53,10 @@ const HabitListSection = ({
             iconName={habit.icon}
             isActive={activeHabitId === habit.id}
             isPlaceholder={!habit.name}
-            onClick={() =>
-              habit.id.includes('placeholder') ? null : onSelectHabit(habit.id)
-            }
+            onClick={() => {
+              if (habit.id.includes('placeholder')) return;
+              onSelectHabit(activeHabitId === habit.id ? null : habit.id);
+            }}
             onCommit={() =>
               habit.id.includes('placeholder') ? null : onCommitHabit(habit.id)
             }
@@ -72,25 +73,23 @@ const HabitListSection = ({
       </div>
 
       {totalPages > 1 && (
-        <div className="flex justify-end items-center gap-4 mt-6">
+        <div className="flex justify-center md:justify-end items-center gap-4 mt-8 md:mt-10">
           <button
             disabled={currentPage === 0}
             onClick={() => setCurrentPage((p) => p - 1)}
-            className="btn btn-xs btn-circle bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 hover:bg-primary hover:text-white transition-all disabled:opacity-20"
+            className="btn btn-xs md:btn-sm btn-circle bg-base-200 border-base-300 text-base-content/60 hover:bg-primary hover:text-white transition-all disabled:opacity-20"
           >
-            <ChevronLeft size={14} />
+            <ChevronLeft size={16} />
           </button>
-          <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 tracking-tighter uppercase italic">
-            {currentPage + 1}{' '}
-            <span className="mx-1 text-gray-300 dark:text-gray-700">/</span>{' '}
-            {totalPages}
+          <span className="text-[10px] md:text-xs font-black text-base-content/40 tracking-widest uppercase italic">
+            {currentPage + 1} <span className="mx-1 opacity-30">/</span> {totalPages}
           </span>
           <button
             disabled={currentPage === totalPages - 1}
             onClick={() => setCurrentPage((p) => p + 1)}
-            className="btn btn-xs btn-circle bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 hover:bg-primary hover:text-white transition-all disabled:opacity-20"
+            className="btn btn-xs md:btn-sm btn-circle bg-base-200 border-base-300 text-base-content/60 hover:bg-primary hover:text-white transition-all disabled:opacity-20"
           >
-            <ChevronRight size={14} />
+            <ChevronRight size={16} />
           </button>
         </div>
       )}

@@ -23,6 +23,7 @@
     "edit": "Edit",
     "cancel": "Cancel",
     "confirm": "Confirm",
+    "habit": "Habit",
     "error": "Something went wrong, please try again",
     "saveSuccess": "Checked in successfully",
     "createSuccess": "Created successfully",
@@ -34,6 +35,10 @@
     "appName": "Life Commit",
     "less": "Less",
     "more": "More"
+  },
+  "theme": {
+    "light": "Light Mode",
+    "dark": "Dark Mode"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
@@ -78,6 +83,7 @@
     "frequency": {
       "title": "Frequency",
       "daily": "Daily",
+      "dailyDesc": "Do it every day!",
       "weekly_count": "Weekly Count",
       "weekly_days": "Weekly Days",
       "custom": "Custom",

@@ -42,23 +42,23 @@ const IconPicker = ({ selectedIcon, onSelect }: IconPickerProps) => {
       <button
         type="button"
         onClick={() => setShowPicker(!showPicker)}
-        className="flex items-center gap-4 bg-base-200 border border-base-300 h-14 rounded-2xl px-4 hover:border-primary transition-all w-full overflow-hidden group"
+        className="flex items-center gap-3 md:gap-4 bg-base-200 border-none h-12 md:h-14 rounded-2xl px-4 hover:ring-2 hover:ring-primary/50 transition-all w-full overflow-hidden group active:scale-[0.98]"
       >
-        <div className="p-2 bg-primary/10 rounded-xl text-primary shrink-0 group-hover:bg-primary/20 transition-colors">
-          <SelectedIconComponent size={24} />
+        <div className="p-1.5 md:p-2 bg-primary/10 rounded-xl text-primary shrink-0 group-hover:bg-primary/20 transition-colors">
+          <SelectedIconComponent size={20} className="md:w-6 md:h-6" />
         </div>
-        <span className="font-bold text-base-content truncate">
+        <span className="font-bold text-base-content truncate text-sm md:text-base text-left grow">
           {displayLabel}
         </span>
       </button>
 
       {showPicker && (
-        <div className="absolute top-[88px] left-0 w-full bg-base-100 border border-base-300 rounded-3xl shadow-2xl z-[70] p-4 animate-in fade-in zoom-in-95 duration-200">
-          <div className="flex items-center gap-2 bg-base-200 border border-base-300 rounded-xl px-3 mb-4 focus-within:border-primary transition-all">
-            <Search size={16} className="text-base-content/40" />
+        <div className="absolute top-[80px] md:top-[88px] left-0 w-full bg-base-100 border border-base-300 rounded-2xl md:rounded-3xl shadow-2xl z-[70] p-3 md:p-4 animate-in fade-in zoom-in-95 duration-200 origin-top">
+          <div className="flex items-center gap-2 bg-base-200 border-none rounded-xl px-3 mb-3 md:mb-4 focus-within:ring-2 focus-within:ring-primary transition-all">
+            <Search size={16} className="text-base-content/40 shrink-0" />
             <input
               type="text"
-              className="bg-transparent w-full py-2 text-sm font-bold outline-none text-base-content placeholder:text-base-content/20"
+              className="bg-transparent w-full py-2 text-xs md:text-sm font-bold outline-none text-base-content placeholder:text-base-content/20"
               placeholder={t('common.search')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -67,13 +67,13 @@ const IconPicker = ({ selectedIcon, onSelect }: IconPickerProps) => {
             {searchTerm && (
               <X
                 size={16}
-                className="cursor-pointer text-base-content/40 hover:text-base-content transition-colors"
+                className="cursor-pointer text-base-content/40 hover:text-base-content transition-colors shrink-0"
                 onClick={() => setSearchTerm('')}
               />
             )}
           </div>
 
-          <div className="grid grid-cols-5 gap-2 max-h-56 overflow-y-auto pr-2 custom-scrollbar">
+          <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 max-h-48 md:max-h-56 overflow-y-auto pr-1 custom-scrollbar">
             {filteredIcons.map((item) => {
               const IconComp = (Icons as any)[item.name] || Target;
               const isSelected = selectedIcon === item.name;
@@ -87,18 +87,18 @@ const IconPicker = ({ selectedIcon, onSelect }: IconPickerProps) => {
                     setShowPicker(false);
                     setSearchTerm('');
                   }}
-                  className={`flex items-center justify-center p-3 rounded-xl transition-all ${
+                  className={`flex items-center justify-center p-2.5 md:p-3 rounded-xl transition-all ${
                     isSelected
                       ? 'bg-primary text-primary-content shadow-lg shadow-primary/20 scale-105'
                       : 'hover:bg-base-200 text-base-content/40 hover:text-base-content'
                   }`}
                 >
-                  <IconComp size={22} />
+                  <IconComp size={20} className="md:w-[22px] md:h-[22px]" />
                 </button>
               );
             })}
             {filteredIcons.length === 0 && (
-              <div className="col-span-5 py-6 text-center text-base-content/40 text-[10px] font-bold uppercase tracking-widest">
+              <div className="col-span-4 sm:col-span-5 py-6 text-center text-base-content/40 text-[10px] font-bold uppercase tracking-widest">
                 {t('common.noResults')}
               </div>
             )}

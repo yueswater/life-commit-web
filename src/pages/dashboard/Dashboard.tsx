@@ -46,11 +46,8 @@ const Dashboard = () => {
 
     if (data) {
       setHabits(data);
-      if (data.length > 0 && !activeHabitId) {
-        setActiveHabitId(data[0].id);
-      }
     }
-  }, [activeHabitId]);
+  }, []);
 
   useEffect(() => {
     fetchHabits();
@@ -110,6 +107,7 @@ const Dashboard = () => {
       if (activeHabitId === confirmConfig.id) setActiveHabitId(null);
       showToast(t('common.deleteSuccess'));
       fetchHabits();
+      setRefreshGridKey((prev) => prev + 1);
     } else {
       showToast(t('common.error'), 'error');
     }
@@ -122,16 +120,16 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-64px)] w-full py-10 px-6 flex flex-col items-center overflow-x-hidden">
-      <div className="w-full max-w-6xl flex flex-col gap-10">
-        <div className="flex flex-col lg:flex-row gap-8 items-stretch w-full">
-          <div className="w-full lg:w-[400px] shrink-0">
+    <div className="min-h-screen w-full py-6 md:py-10 px-4 md:px-6 flex flex-col items-center overflow-x-hidden bg-base-100">
+      <div className="w-full max-w-6xl flex flex-col gap-8 md:gap-10">
+        <div className="flex flex-col lg:flex-row gap-8 items-start w-full">
+          <div className="w-full lg:w-[380px] shrink-0">
             <UserStats habitCount={habits.length} refreshKey={refreshGridKey} />
           </div>
 
-          <div className="flex-grow flex flex-col gap-4 min-w-0">
-            <div className="flex justify-between items-center px-2">
-              <h2 className="text-xl font-black tracking-tighter text-primary uppercase">
+          <div className="flex-grow flex flex-col gap-4 w-full min-w-0">
+            <div className="flex justify-between items-center px-1">
+              <h2 className="text-xl md:text-2xl font-black italic tracking-tighter text-primary uppercase">
                 {t('habit.myHabits')}
               </h2>
               <button
@@ -139,13 +137,13 @@ const Dashboard = () => {
                   setEditingHabit(null);
                   setIsModalOpen(true);
                 }}
-                className="btn btn-primary btn-sm btn-circle shadow-lg shadow-primary/20 hover:scale-110 transition-transform"
+                className="btn btn-primary btn-sm md:btn-md btn-circle shadow-xl shadow-primary/20 hover:scale-110 active:scale-95 transition-all"
               >
-                <Plus size={18} />
+                <Plus size={20} />
               </button>
             </div>
 
-            <div className="flex-grow">
+            <div className="w-full overflow-hidden">
               <HabitListSection
                 habits={habits}
                 activeHabitId={activeHabitId}
@@ -158,22 +156,14 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="w-full pt-8 border-t border-base-300 flex justify-center">
-          <div className="w-full">
-            {activeHabitId ? (
-              <div className="w-full animate-in fade-in slide-in-from-bottom-4 duration-700 flex justify-center">
-                <HabitGrid
-                  key={`${activeHabitId}-${refreshGridKey}`}
-                  habitId={activeHabitId}
-                />
-              </div>
-            ) : (
-              <div className="w-full h-[300px] bg-base-200/20 rounded-[2.5rem] border-2 border-base-300 border-dashed flex items-center justify-center">
-                <span className="text-base-content/40 font-black uppercase tracking-widest">
-                  {t('habit.selectPrompt')}
-                </span>
-              </div>
-            )}
+        <div className="w-full pt-6 md:pt-10 border-t border-base-200 dark:border-base-800 flex justify-center">
+          <div className="w-full overflow-x-auto no-scrollbar">
+            <div className="w-full min-w-[300px] animate-in fade-in slide-in-from-bottom-6 duration-700 flex justify-center">
+              <HabitGrid
+                key={`${activeHabitId || 'all'}-${refreshGridKey}`}
+                habitId={activeHabitId}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -186,6 +176,7 @@ const Dashboard = () => {
         }}
         onSuccess={() => {
           fetchHabits();
+          setRefreshGridKey((prev) => prev + 1);
           showToast(
             editingHabit ? t('common.updateSuccess') : t('common.createSuccess')
           );
